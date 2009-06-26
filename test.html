@@ -3,26 +3,69 @@
 <head><title>TUIO Client plugin test</title>
 <script type="text/javascript">
 
-var obj;
+var canvas;
+var ctx;
+var w = 300;
+var h = 300;
+
+function tuio_object_add(sid, fid, x, y, a) {
+}
+
+function tuio_object_update(sid, fid, x, y, a) {
+}
+
+function tuio_object_remove(sid, fid, x, y, a) {
+}
+
+function tuio_cursor_add(sid, fid, x, y) {
+}
+
+function tuio_cursor_update(sid, fid, x, y) {
+	var px = x * w;
+	var py = y * h;
+
+	ctx.beginPath();
+	ctx.fillStyle = "rgba(0, 0, 200, 0.2)";
+	ctx.arc(px, py, 5, 0, 2*Math.PI, true);
+	ctx.fill();
+}
+
+function tuio_cursor_remove(sid, fid, x, y) {
+}
 
 function tuio_callback(type, sid, fid, x, y, a) {
-	console.log("Event:", type, sid, fid, x, y, a);
+	if (type == 0) {
+		tuio_object_add(sid, fid, x, y, a);
+	}
+	else if (type == 1) {
+		tuio_object_update(sid, fid, x, y, a);
+	}
+	else if (type == 2) {
+		tuio_object_remove(sid, fid, x, y, a);
+	}
+	else if (type == 3) {
+		tuio_cursor_add(sid, fid, x, y);
+	}
+	else if (type == 4) {
+		tuio_cursor_update(sid, fid, x, y);
+	}
+	else if (type == 5) {
+		tuio_cursor_remove(sid, fid, x, y);
+	}
 }
 
 function ol() {
-	obj = document.getElementById("p1");
+	canvas = document.getElementById('c');
+	ctx = canvas.getContext('2d');
 }
 
-function reg() {
-	obj.register_function("handler");
-}
 </script>
 </head>
 <body onload="ol()">
 	
 <object id="p1" type="application/x-tuio">Plugin FAILED to load</object>
 
-<button onclick="reg()">Register Functions</button>
+<canvas id="c" width="300" height="300" style="top:0px; left:0px; width: 300px; height: 300px;"></canvas>
 
 </body>
 </html>
