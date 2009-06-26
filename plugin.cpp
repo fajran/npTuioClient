@@ -19,7 +19,7 @@
 
 #include <iostream>
 #include <sstream>
-#define D(s) std::cerr << s << std::endl;
+#define D(s) /*std::cerr << s << std::endl;*/
 
 #include <set>
 
