@@ -39,13 +39,13 @@ public:
 
     NPError GetValue(NPPVariable variable, void *value);
 
-    NPError WriteStatus(char *msg) const;
-    NPError WriteStatus(std::string msg) const;
+    NPError WriteStatus(const char *msg) const;
+
+	void event(int, long, int, float, float, float);
 
 private:
     NPP         _instance;
 
-	std::string _host;
 	int         _port;
 	std::string _callback;
 };

@@ -17,7 +17,13 @@
 
 #include "plugin.h"
 
+#include "client.h"
+
 #include <iostream>
+#include <sstream>
+#define D(s) std::cerr << s << std::endl;
+
+#include <set>
 
 #define MIME_TYPES_HANDLED  "application/x-tuio"
 // The name must be this value to get flash movies that check the
@@ -30,6 +36,20 @@
 extern NPNetscapeFuncs NPNFuncs;
 
 NPBool plugInitialized = FALSE;
+
+static std::set<nsPluginInstance*> instances;
+
+void tuio_callback(TuioEvent type, long sid, int fid, float x, float y, float a)
+{
+	D("[tuio] callback: type=" << type
+		<< ", sid=" << sid << ", fid=" << fid
+		<< ", x=" << x << ", y=" << y << ", a=" << a);
+
+	std::set<nsPluginInstance*>::iterator iter;
+	for (iter = instances.begin(); iter != instances.end(); iter++) {
+		(*iter)->event(type, sid, fid, x, y, a);
+	}
+}
 
 void
 PR_CALLBACK Destructor(void * /* data */)
@@ -71,6 +91,8 @@ NS_PluginInitialize()
 
     plugInitialized = TRUE;
 
+	tuio_start(3333);
+
     return NPERR_NO_ERROR;
 }
 
@@ -94,6 +116,8 @@ NS_PluginShutdown()
 
     plugInitialized = FALSE;
 #endif
+
+	tuio_stop();
 }
 
 
@@ -166,7 +190,6 @@ nsPluginInstance::nsPluginInstance(nsPluginCreateData* data)
     :
     nsPluginInstanceBase(),
     _instance(data->instance),
-	_host("localhost"),
 	_port(3333),
 	_callback("tuio_callback")
 {
@@ -184,11 +207,6 @@ nsPluginInstance::nsPluginInstance(nsPluginCreateData* data)
             val = data->argv[i];
         }
 
-        if ( ! strcasecmp(name.c_str(), "host") )
-        {
-            _host = val;
-        }
-
         else if ( ! strcasecmp(name.c_str(), "callback") )
         {
             _callback = val;
@@ -200,11 +218,13 @@ nsPluginInstance::nsPluginInstance(nsPluginCreateData* data)
         }
     }
 
+	instances.insert(this);
 }
 
 /// \brief Destructor
 nsPluginInstance::~nsPluginInstance()
 {
+	instances.erase(this);
 }
 
 /// \brief Initialize an instance of the plugin object
@@ -239,12 +259,26 @@ nsPluginInstance::GetValue(NPPVariable aVariable, void *aValue)
 /// This writes a status message to the status line at the bottom of
 /// the browser window and the console firefox was started from.
 NPError
-nsPluginInstance::WriteStatus(char *msg) const
+nsPluginInstance::WriteStatus(const char *msg) const
 {
     NPN_Status(_instance, msg);
     std::cout << msg << std::endl;
 
     return NPERR_NO_ERROR;
+}
+
+void nsPluginInstance::event(int type, long sid, int fid, float x, float y, float a)
+{
+	D("[event] callback: type=" << type
+		<< ", sid=" << sid << ", fid=" << fid
+		<< ", x=" << x << ", y=" << y << ", a=" << a);
+
+	std::stringstream ss;
+	ss << "type=" << type
+		<< ", sid=" << sid << ", fid=" << fid
+		<< ", x=" << x << ", y=" << y << ", a=" << a;
+
+	NPN_GetURL(_instance, "javascript:tuio_callback();", "_self");
 }
 
 // Local Variables:
