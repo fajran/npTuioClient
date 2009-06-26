@@ -196,3 +196,9 @@ void NPN_ReleaseObject(NPObject *obj)
 {
   return NPNFuncs.releaseobject(obj);
 }
+
+void NPN_PluginThreadAsyncCall (NPP instance, void (*func)(void *), void  *userData)
+{
+	CallNPN_PluginThreadAsyncCallProc(NPNFuncs.pluginthreadasynccall,
+		instance, func,	userData);
+}

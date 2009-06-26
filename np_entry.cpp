@@ -145,9 +145,9 @@ static NPError fillNetscapeFunctionTable(NPNetscapeFuncs* aNPNFuncs)
   if (++i <= n) NPNFuncs.setexception = aNPNFuncs->setexception;
   if (++i <= n) NPNFuncs.pushpopupsenabledstate = aNPNFuncs->pushpopupsenabledstate;
   if (++i <= n) NPNFuncs.poppopupsenabledstate = aNPNFuncs->poppopupsenabledstate;
-  // if (++i <= n) NPNFuncs.enumerate = aNPNFuncs->enumerate;
-  // if (++i <= n) NPNFuncs.pluginthreadasynccall = aNPNFuncs->pluginthreadasynccall;
-  // if (++i <= n) NPNFuncs.construct = aNPNFuncs->construct;
+  if (++i <= n) NPNFuncs.enumerate = aNPNFuncs->enumerate;
+  if (++i <= n) NPNFuncs.pluginthreadasynccall = aNPNFuncs->pluginthreadasynccall;
+  if (++i <= n) NPNFuncs.construct = aNPNFuncs->construct;
 
   return NPERR_NO_ERROR;
 }

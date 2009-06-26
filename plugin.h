@@ -20,6 +20,7 @@
 #define PLUGIN_H
 
 #include "pluginbase.h"
+#include "client.h"
 
 #include <string>
 #include <map>
@@ -38,10 +39,19 @@ public:
     void shut();
 
     NPError GetValue(NPPVariable variable, void *value);
+    NPError SetWindow(NPWindow *aWindow);
+
+    NPError NewStream(NPMIMEType type, NPStream *stream, NPBool seekable,
+                      uint16_t *stype);
+    NPError DestroyStream(NPStream * stream, NPError reason);
+
+    int32_t WriteReady(NPStream *stream);
+    int32_t Write(NPStream *stream, int32_t offset, int32_t len, void *buffer);
 
     NPError WriteStatus(const char *msg) const;
 
-	void event(int, long, int, float, float, float);
+	void event(TuioEventData);
+
 
 private:
     NPP         _instance;

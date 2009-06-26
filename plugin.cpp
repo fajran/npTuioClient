@@ -17,8 +17,6 @@
 
 #include "plugin.h"
 
-#include "client.h"
-
 #include <iostream>
 #include <sstream>
 #define D(s) std::cerr << s << std::endl;
@@ -39,15 +37,11 @@ NPBool plugInitialized = FALSE;
 
 static std::set<nsPluginInstance*> instances;
 
-void tuio_callback(TuioEvent type, long sid, int fid, float x, float y, float a)
+void tuio_callback(TuioEventData data)
 {
-	D("[tuio] callback: type=" << type
-		<< ", sid=" << sid << ", fid=" << fid
-		<< ", x=" << x << ", y=" << y << ", a=" << a);
-
 	std::set<nsPluginInstance*>::iterator iter;
 	for (iter = instances.begin(); iter != instances.end(); iter++) {
-		(*iter)->event(type, sid, fid, x, y, a);
+		(*iter)->event(data);
 	}
 }
 
@@ -235,6 +229,7 @@ nsPluginInstance::~nsPluginInstance()
 NPBool
 nsPluginInstance::init(NPWindow* aWindow)
 {
+	D("[ns] init");
     return TRUE;
 }
 
@@ -246,12 +241,26 @@ nsPluginInstance::init(NPWindow* aWindow)
 void
 nsPluginInstance::shut()
 {
+	D("[ns] shut");
+}
+
+NPError
+nsPluginInstance::SetWindow(NPWindow* aWindow)
+{
+	D("[ns] SetWindow");
+
+	if(!aWindow)
+	{
+		return NPERR_INVALID_PARAM;
+	}
+
+	return NPERR_NO_ERROR;
 }
 
 NPError
 nsPluginInstance::GetValue(NPPVariable aVariable, void *aValue)
 {
-    return NS_PluginGetValue(aVariable, aValue);
+	return NS_PluginGetValue(aVariable, aValue);
 }
 
 /// \brief Write a status message
@@ -261,24 +270,76 @@ nsPluginInstance::GetValue(NPPVariable aVariable, void *aValue)
 NPError
 nsPluginInstance::WriteStatus(const char *msg) const
 {
-    NPN_Status(_instance, msg);
-    std::cout << msg << std::endl;
+	NPN_Status(_instance, msg);
+	std::cout << msg << std::endl;
 
-    return NPERR_NO_ERROR;
+	return NPERR_NO_ERROR;
 }
 
-void nsPluginInstance::event(int type, long sid, int fid, float x, float y, float a)
+NPError
+nsPluginInstance::NewStream(NPMIMEType /*type*/, NPStream* stream,
+                            NPBool /*seekable*/, uint16_t* /*stype*/)
 {
-	D("[event] callback: type=" << type
-		<< ", sid=" << sid << ", fid=" << fid
-		<< ", x=" << x << ", y=" << y << ", a=" << a);
+	D("[ns] NewStream");
+	return NPERR_NO_ERROR;
+}
 
+NPError
+nsPluginInstance::DestroyStream(NPStream* /*stream*/, NPError /*reason*/)
+{
+	D("[ns] DestroyStream");
+	return NPERR_NO_ERROR;
+}
+
+int32_t
+nsPluginInstance::WriteReady(NPStream* /* stream */ )
+{
+	D("[ns] WriteReady");
+	return 0x0fffffff;
+}
+
+int32_t
+nsPluginInstance::Write(NPStream* /*stream*/, int32_t /*offset*/, int32_t len,
+        void* buffer)
+{
+	D("[ns] Write: len=" << len);
+	return len;
+}
+
+typedef struct {
+	NPP instance;
+	TuioEventData data;
+} Event;
+
+void test(void* ev)
+{
+	D("ev=" << ev);
+	Event* event = (Event*)ev;
+	D("event=" << event);
 	std::stringstream ss;
-	ss << "type=" << type
-		<< ", sid=" << sid << ", fid=" << fid
-		<< ", x=" << x << ", y=" << y << ", a=" << a;
+	ss << "javascript:tuio_callback(";
+	ss << event->data.type << ", ";
+	ss << event->data.sid << ", ";
+	ss << event->data.fid << ", ";
+	ss << event->data.x << ", ";
+	ss << event->data.y << ", ";
+	ss << event->data.a << ");";
+	NPN_GetURL(event->instance, ss.str().c_str(), "_self");
 
-	NPN_GetURL(_instance, "javascript:tuio_callback();", "_self");
+	delete event;
+}
+
+void nsPluginInstance::event(TuioEventData data)
+{
+	D("[event] callback: type=" << data.type
+		<< ", sid=" << data.sid << ", fid=" << data.fid
+		<< ", x=" << data.x << ", y=" << data.y << ", a=" << data.a);
+
+	Event* ev = new Event();
+	ev->instance = _instance;
+	ev->data = data;
+
+	NPN_PluginThreadAsyncCall(_instance, test, ev);
 }
 
 // Local Variables:
