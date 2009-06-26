@@ -31,8 +31,6 @@ extern NPNetscapeFuncs NPNFuncs;
 
 NPBool plugInitialized = FALSE;
 
-static const char* getPluginDescription();
-
 void
 PR_CALLBACK Destructor(void * /* data */)
 {
@@ -121,8 +119,7 @@ NS_PluginGetValue(NPPVariable aVariable, void *aValue)
         // navigator.plugins["Shockwave Flash"].description, used in
         // many flash version detection scripts.
         case NPPVpluginDescriptionString:
-            *static_cast<const char **>(aValue) =
-                        getPluginDescription();
+            *static_cast<const char **>(aValue) = PLUGIN_DESCRIPTION;
             break;
 
         case NPPVpluginNeedsXEmbed:
@@ -248,18 +245,6 @@ nsPluginInstance::WriteStatus(char *msg) const
     std::cout << msg << std::endl;
 
     return NPERR_NO_ERROR;
-}
-
-static const char*
-getPluginDescription() 
-{
-    static const char* desc = NULL;
-    if (!desc)
-    {
-        desc = std::getenv("GNASH_PLUGIN_DESCRIPTION");
-        if (desc == NULL) desc = PLUGIN_DESCRIPTION;
-    }
-    return desc;
 }
 
 // Local Variables:
