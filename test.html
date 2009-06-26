@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head><title>TUIO Client plugin test</title>
+<script type="text/javascript">
+
+var obj;
+
+function handler(type, sid, fid, x, y, a) {
+	console.log("Event:", type, sid, fid, x, y, a);
+}
+
+function ol() {
+	obj = document.getElementById("p1");
+}
+
+function reg() {
+	obj.register_function("handler");
+}
+</script>
+</head>
+<body onload="ol()">
+	
+<object id="p1" type="application/x-tuio">Plugin FAILED to load</object>
+
+<button onclick="reg()">Register Functions</button>
+
+</body>
+</html>
