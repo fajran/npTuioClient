@@ -237,95 +237,95 @@ int16	NPP_HandleEvent(NPP instance, void* event)
   return rv;
 }
 
-// FIXME /**************************************************/
-// FIXME /*                                                */
-// FIXME /*                     Mac                        */
-// FIXME /*                                                */
-// FIXME /**************************************************/
-// FIXME 
-// FIXME // Mac needs these wrappers, see npplat.h for more info
-// FIXME 
-// FIXME #ifdef XP_MAC
-// FIXME 
-// FIXME NPError	Private_New(NPMIMEType pluginType, NPP instance, uint16 mode, int16 argc, char* argn[], char* argv[], NPSavedData* saved)
-// FIXME {
-// FIXME   NPError rv = NPP_New(pluginType, instance, mode, argc, argn, argv, saved);
-// FIXME   return rv;	
-// FIXME }
-// FIXME 
-// FIXME NPError Private_Destroy(NPP instance, NPSavedData** save)
-// FIXME {
-// FIXME   NPError rv = NPP_Destroy(instance, save);
-// FIXME   return rv;
-// FIXME }
-// FIXME 
-// FIXME NPError Private_SetWindow(NPP instance, NPWindow* window)
-// FIXME {
-// FIXME   NPError rv = NPP_SetWindow(instance, window);
-// FIXME   return rv;
-// FIXME }
-// FIXME 
-// FIXME NPError Private_NewStream(NPP instance, NPMIMEType type, NPStream* stream, NPBool seekable, uint16* stype)
-// FIXME {
-// FIXME   NPError rv = NPP_NewStream(instance, type, stream, seekable, stype);
-// FIXME   return rv;
-// FIXME }
-// FIXME 
-// FIXME int32 Private_WriteReady(NPP instance, NPStream* stream)
-// FIXME {
-// FIXME   int32 rv = NPP_WriteReady(instance, stream);
-// FIXME   return rv;
-// FIXME }
-// FIXME 
-// FIXME int32 Private_Write(NPP instance, NPStream* stream, int32 offset, int32 len, void* buffer)
-// FIXME {
-// FIXME   int32 rv = NPP_Write(instance, stream, offset, len, buffer);
-// FIXME   return rv;
-// FIXME }
-// FIXME 
-// FIXME void Private_StreamAsFile(NPP instance, NPStream* stream, const char* fname)
-// FIXME {
-// FIXME   NPP_StreamAsFile(instance, stream, fname);
-// FIXME }
-// FIXME 
-// FIXME 
-// FIXME NPError Private_DestroyStream(NPP instance, NPStream* stream, NPError reason)
-// FIXME {
-// FIXME   NPError rv = NPP_DestroyStream(instance, stream, reason);
-// FIXME   return rv;
-// FIXME }
-// FIXME 
-// FIXME int16 Private_HandleEvent(NPP instance, void* event)
-// FIXME {
-// FIXME   int16 rv = NPP_HandleEvent(instance, event);
-// FIXME   return rv;
-// FIXME }
-// FIXME 
-// FIXME void Private_Print(NPP instance, NPPrint* platformPrint)
-// FIXME {
-// FIXME   NPP_Print(instance, platformPrint);
-// FIXME }
-// FIXME 
-// FIXME void Private_URLNotify(NPP instance, const char* url, NPReason reason, void* notifyData)
-// FIXME {
-// FIXME   NPP_URLNotify(instance, url, reason, notifyData);
-// FIXME }
-// FIXME 
-// FIXME jref Private_GetJavaClass(void)
-// FIXME {
-// FIXME   return NULL;
-// FIXME }
-// FIXME 
-// FIXME NPError Private_GetValue(NPP instance, NPPVariable variable, void *result)
-// FIXME {
-// FIXME   NPError rv = NPP_GetValue(instance, variable, result);
-// FIXME   return rv;
-// FIXME }
-// FIXME 
-// FIXME NPError Private_SetValue(NPP instance, NPNVariable variable, void *value)
-// FIXME {
-// FIXME   NPError rv = NPP_SetValue(instance, variable, value);
-// FIXME   return rv;
-// FIXME }
-// FIXME 
-// FIXME #endif //XP_MAC
+/**************************************************/
+/*                                                */
+/*                     Mac                        */
+/*                                                */
+/**************************************************/
+
+// Mac needs these wrappers, see npplat.h for more info
+
+#ifdef XP_MAC
+
+NPError	Private_New(NPMIMEType pluginType, NPP instance, uint16 mode, int16 argc, char* argn[], char* argv[], NPSavedData* saved)
+{
+  NPError rv = NPP_New(pluginType, instance, mode, argc, argn, argv, saved);
+  return rv;	
+}
+
+NPError Private_Destroy(NPP instance, NPSavedData** save)
+{
+  NPError rv = NPP_Destroy(instance, save);
+  return rv;
+}
+
+NPError Private_SetWindow(NPP instance, NPWindow* window)
+{
+  NPError rv = NPP_SetWindow(instance, window);
+  return rv;
+}
+
+NPError Private_NewStream(NPP instance, NPMIMEType type, NPStream* stream, NPBool seekable, uint16* stype)
+{
+  NPError rv = NPP_NewStream(instance, type, stream, seekable, stype);
+  return rv;
+}
+
+int32 Private_WriteReady(NPP instance, NPStream* stream)
+{
+  int32 rv = NPP_WriteReady(instance, stream);
+  return rv;
+}
+
+int32 Private_Write(NPP instance, NPStream* stream, int32 offset, int32 len, void* buffer)
+{
+  int32 rv = NPP_Write(instance, stream, offset, len, buffer);
+  return rv;
+}
+
+void Private_StreamAsFile(NPP instance, NPStream* stream, const char* fname)
+{
+  NPP_StreamAsFile(instance, stream, fname);
+}
+
+
+NPError Private_DestroyStream(NPP instance, NPStream* stream, NPError reason)
+{
+  NPError rv = NPP_DestroyStream(instance, stream, reason);
+  return rv;
+}
+
+int16 Private_HandleEvent(NPP instance, void* event)
+{
+  int16 rv = NPP_HandleEvent(instance, event);
+  return rv;
+}
+
+void Private_Print(NPP instance, NPPrint* platformPrint)
+{
+  NPP_Print(instance, platformPrint);
+}
+
+void Private_URLNotify(NPP instance, const char* url, NPReason reason, void* notifyData)
+{
+  NPP_URLNotify(instance, url, reason, notifyData);
+}
+
+jref Private_GetJavaClass(void)
+{
+  return NULL;
+}
+
+NPError Private_GetValue(NPP instance, NPPVariable variable, void *result)
+{
+  NPError rv = NPP_GetValue(instance, variable, result);
+  return rv;
+}
+
+NPError Private_SetValue(NPP instance, NPNVariable variable, void *value)
+{
+  NPError rv = NPP_SetValue(instance, variable, value);
+  return rv;
+}
+
+#endif //XP_MAC

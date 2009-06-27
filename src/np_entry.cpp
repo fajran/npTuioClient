@@ -156,48 +156,48 @@ static NPError fillNetscapeFunctionTable(NPNetscapeFuncs* aNPNFuncs)
 // Some exports are different on different platforms
 //
 
-// FIXME /**************************************************/
-// FIXME /*                                                */
-// FIXME /*                   Windows                      */
-// FIXME /*                                                */
-// FIXME /**************************************************/
-// FIXME #ifdef XP_WIN
-// FIXME 
-// FIXME NPError OSCALL NP_Initialize(NPNetscapeFuncs* aNPNFuncs)
-// FIXME {
-// FIXME   /*
-// FIXME    * N.B.  On Firefox 2.0.0.12/WinXP, aNPNFuncs->size is 172 while
-// FIXME    * sizeof(NPNetscapeFuncs) is 184.  However, npgnash.dll continues to
-// FIXME    * work fine even though NPNFuncs isn't populated (!), and as a matter
-// FIXME    * of fact, Firefox seems to ignore the NPERR_INVALID_FUNCTABLE_ERROR
-// FIXME    * return from NP_Initialize and continues to load and execute
-// FIXME    * npgnash.dll, anyway.  Therefore, we should continue and execute
-// FIXME    * NS_PluginInitialize anyway, too.
-// FIXME    */
-// FIXME 
-// FIXME   NPError rv = fillNetscapeFunctionTable(aNPNFuncs);
-// FIXME #if 0
-// FIXME   if(rv != NPERR_NO_ERROR)
-// FIXME     return rv;
-// FIXME #endif
-// FIXME   NPError rv2 = NS_PluginInitialize();
-// FIXME 
-// FIXME   return rv2 != NPERR_NO_ERROR ? rv2 : rv;
-// FIXME }
-// FIXME 
-// FIXME NPError OSCALL NP_GetEntryPoints(NPPluginFuncs* aNPPFuncs)
-// FIXME {
-// FIXME   return fillPluginFunctionTable(aNPPFuncs);
-// FIXME }
-// FIXME 
-// FIXME #endif //XP_WIN
+/**************************************************/
+/*                                                */
+/*                   Windows                      */
+/*                                                */
+/**************************************************/
+#ifdef XP_WIN
+
+NPError OSCALL NP_Initialize(NPNetscapeFuncs* aNPNFuncs)
+{
+  /*
+   * N.B.  On Firefox 2.0.0.12/WinXP, aNPNFuncs->size is 172 while
+   * sizeof(NPNetscapeFuncs) is 184.  However, npgnash.dll continues to
+   * work fine even though NPNFuncs isn't populated (!), and as a matter
+   * of fact, Firefox seems to ignore the NPERR_INVALID_FUNCTABLE_ERROR
+   * return from NP_Initialize and continues to load and execute
+   * npgnash.dll, anyway.  Therefore, we should continue and execute
+   * NS_PluginInitialize anyway, too.
+   */
+
+  NPError rv = fillNetscapeFunctionTable(aNPNFuncs);
+#if 0
+  if(rv != NPERR_NO_ERROR)
+    return rv;
+#endif
+  NPError rv2 = NS_PluginInitialize();
+
+  return rv2 != NPERR_NO_ERROR ? rv2 : rv;
+}
+
+NPError OSCALL NP_GetEntryPoints(NPPluginFuncs* aNPPFuncs)
+{
+  return fillPluginFunctionTable(aNPPFuncs);
+}
+
+#endif //XP_WIN
 
 /**************************************************/
 /*                                                */
 /*                    Unix                        */
 /*                                                */
 /**************************************************/
-// FIXME #ifdef XP_UNIX
+#ifdef XP_UNIX
 
 NPError NP_Initialize(NPNetscapeFuncs* aNPNFuncs, NPPluginFuncs* aNPPFuncs)
 {
@@ -222,127 +222,127 @@ NPError NP_GetValue(void* /*future*/, NPPVariable aVariable, void *aValue)
   return NS_PluginGetValue(aVariable, aValue);
 }
 
-// FIXME #endif //XP_UNIX
+#endif //XP_UNIX
 
-// FIXME /**************************************************/
-// FIXME /*                                                */
-// FIXME /*                     Mac                        */
-// FIXME /*                                                */
-// FIXME /**************************************************/
-// FIXME #ifdef XP_MAC
-// FIXME 
-// FIXME #if !TARGET_API_MAC_CARBON
-// FIXME QDGlobals* gQDPtr; // Pointer to Netscape's QuickDraw globals
-// FIXME #endif
-// FIXME 
-// FIXME short gResFile; // Refnum of the plugin's resource file
-// FIXME 
-// FIXME NPError Private_Initialize(void)
-// FIXME {
-// FIXME   NPError rv = NS_PluginInitialize();
-// FIXME   return rv;
-// FIXME }
-// FIXME 
-// FIXME void Private_Shutdown(void)
-// FIXME {
-// FIXME   NS_PluginShutdown();
-// FIXME   __destroy_global_chain();
-// FIXME }
-// FIXME 
-// FIXME void SetUpQD(void);
-// FIXME 
-// FIXME void SetUpQD(void)
-// FIXME {
-// FIXME   ProcessSerialNumber PSN;
-// FIXME   FSSpec              myFSSpec;
-// FIXME   Str63               name;
-// FIXME   ProcessInfoRec      infoRec;
-// FIXME   OSErr               result = noErr;
-// FIXME   CFragConnectionID   connID;
-// FIXME   Str255              errName;
-// FIXME 
-// FIXME   // Memorize the plugin¹s resource file refnum for later use.
-// FIXME   gResFile = CurResFile();
-// FIXME 
-// FIXME #if !TARGET_API_MAC_CARBON
-// FIXME   // Ask the system if CFM is available.
-// FIXME   long response;
-// FIXME   OSErr err = Gestalt(gestaltCFMAttr, &response);
-// FIXME   Boolean hasCFM = BitTst(&response, 31-gestaltCFMPresent);
-// FIXME 
-// FIXME   if (hasCFM) {
-// FIXME     // GetProcessInformation takes a process serial number and 
-// FIXME     // will give us back the name and FSSpec of the application.
-// FIXME     // See the Process Manager in IM.
-// FIXME     infoRec.processInfoLength = sizeof(ProcessInfoRec);
-// FIXME     infoRec.processName = name;
-// FIXME     infoRec.processAppSpec = &myFSSpec;
-// FIXME 
-// FIXME     PSN.highLongOfPSN = 0;
-// FIXME     PSN.lowLongOfPSN = kCurrentProcess;
-// FIXME 
-// FIXME     result = GetProcessInformation(&PSN, &infoRec);
-// FIXME   }
-// FIXME 	else
-// FIXME     // If no CFM installed, assume it must be a 68K app.
-// FIXME     result = -1;		
-// FIXME 
-// FIXME   if (result == noErr) {
-// FIXME     // Now that we know the app name and FSSpec, we can call GetDiskFragment
-// FIXME     // to get a connID to use in a subsequent call to FindSymbol (it will also
-// FIXME     // return the address of ³main² in app, which we ignore).  If GetDiskFragment 
-// FIXME     // returns an error, we assume the app must be 68K.
-// FIXME     Ptr mainAddr; 	
-// FIXME     result =  GetDiskFragment(infoRec.processAppSpec, 0L, 0L, infoRec.processName,
-// FIXME                               kReferenceCFrag, &connID, (Ptr*)&mainAddr, errName);
-// FIXME   }
-// FIXME 
-// FIXME   if (result == noErr) {
-// FIXME     // The app is a PPC code fragment, so call FindSymbol
-// FIXME     // to get the exported ³qd² symbol so we can access its
-// FIXME     // QuickDraw globals.
-// FIXME     CFragSymbolClass symClass;
-// FIXME     result = FindSymbol(connID, "\pqd", (Ptr*)&gQDPtr, &symClass);
-// FIXME   }
-// FIXME   else {
-// FIXME     // The app is 68K, so use its A5 to compute the address
-// FIXME     // of its QuickDraw globals.
-// FIXME     gQDPtr = (QDGlobals*)(*((long*)SetCurrentA5()) - (sizeof(QDGlobals) - sizeof(GrafPtr)));
-// FIXME   }
-// FIXME #endif /* !TARGET_API_MAC_CARBON */
-// FIXME }
-// FIXME 
-// FIXME NPError main(NPNetscapeFuncs* nsTable, NPPluginFuncs* pluginFuncs, NPP_ShutdownUPP* unloadUpp);
-// FIXME 
-// FIXME #if !TARGET_API_MAC_CARBON
-// FIXME #pragma export on
-// FIXME #if GENERATINGCFM
-// FIXME RoutineDescriptor mainRD = BUILD_ROUTINE_DESCRIPTOR(uppNPP_MainEntryProcInfo, main);
-// FIXME #endif
-// FIXME #pragma export off
-// FIXME #endif /* !TARGET_API_MAC_CARBON */
-// FIXME 
-// FIXME 
-// FIXME NPError main(NPNetscapeFuncs* aNPNFuncs, NPPluginFuncs* aNPPFuncs, NPP_ShutdownUPP* aUnloadUpp)
-// FIXME {
-// FIXME   NPError rv = NPERR_NO_ERROR;
-// FIXME 
-// FIXME   if (aUnloadUpp == NULL)
-// FIXME     rv = NPERR_INVALID_FUNCTABLE_ERROR;
-// FIXME 
-// FIXME   if (rv == NPERR_NO_ERROR)
-// FIXME     rv = fillNetscapeFunctionTable(aNPNFuncs);
-// FIXME 
-// FIXME   if (rv == NPERR_NO_ERROR) {
-// FIXME     // defer static constructors until the global functions are initialized.
-// FIXME     __InitCode__();
-// FIXME     rv = fillPluginFunctionTable(aNPPFuncs);
-// FIXME   }
-// FIXME 
-// FIXME   *aUnloadUpp = NewNPP_ShutdownProc(Private_Shutdown);
-// FIXME   SetUpQD();
-// FIXME   rv = Private_Initialize();
-// FIXME 	
-// FIXME   return rv;
-// FIXME }
-// FIXME #endif //XP_MAC
+/**************************************************/
+/*                                                */
+/*                     Mac                        */
+/*                                                */
+/**************************************************/
+#ifdef XP_MAC
+
+#if !TARGET_API_MAC_CARBON
+QDGlobals* gQDPtr; // Pointer to Netscape's QuickDraw globals
+#endif
+
+short gResFile; // Refnum of the plugin's resource file
+
+NPError Private_Initialize(void)
+{
+  NPError rv = NS_PluginInitialize();
+  return rv;
+}
+
+void Private_Shutdown(void)
+{
+  NS_PluginShutdown();
+  __destroy_global_chain();
+}
+
+void SetUpQD(void);
+
+void SetUpQD(void)
+{
+  ProcessSerialNumber PSN;
+  FSSpec              myFSSpec;
+  Str63               name;
+  ProcessInfoRec      infoRec;
+  OSErr               result = noErr;
+  CFragConnectionID   connID;
+  Str255              errName;
+
+  // Memorize the pluginÂ¹s resource file refnum for later use.
+  gResFile = CurResFile();
+
+#if !TARGET_API_MAC_CARBON
+  // Ask the system if CFM is available.
+  long response;
+  OSErr err = Gestalt(gestaltCFMAttr, &response);
+  Boolean hasCFM = BitTst(&response, 31-gestaltCFMPresent);
+
+  if (hasCFM) {
+    // GetProcessInformation takes a process serial number and 
+    // will give us back the name and FSSpec of the application.
+    // See the Process Manager in IM.
+    infoRec.processInfoLength = sizeof(ProcessInfoRec);
+    infoRec.processName = name;
+    infoRec.processAppSpec = &myFSSpec;
+
+    PSN.highLongOfPSN = 0;
+    PSN.lowLongOfPSN = kCurrentProcess;
+
+    result = GetProcessInformation(&PSN, &infoRec);
+  }
+	else
+    // If no CFM installed, assume it must be a 68K app.
+    result = -1;		
+
+  if (result == noErr) {
+    // Now that we know the app name and FSSpec, we can call GetDiskFragment
+    // to get a connID to use in a subsequent call to FindSymbol (it will also
+    // return the address of Â³mainÂ² in app, which we ignore).  If GetDiskFragment 
+    // returns an error, we assume the app must be 68K.
+    Ptr mainAddr; 	
+    result =  GetDiskFragment(infoRec.processAppSpec, 0L, 0L, infoRec.processName,
+                              kReferenceCFrag, &connID, (Ptr*)&mainAddr, errName);
+  }
+
+  if (result == noErr) {
+    // The app is a PPC code fragment, so call FindSymbol
+    // to get the exported Â³qdÂ² symbol so we can access its
+    // QuickDraw globals.
+    CFragSymbolClass symClass;
+    result = FindSymbol(connID, "\pqd", (Ptr*)&gQDPtr, &symClass);
+  }
+  else {
+    // The app is 68K, so use its A5 to compute the address
+    // of its QuickDraw globals.
+    gQDPtr = (QDGlobals*)(*((long*)SetCurrentA5()) - (sizeof(QDGlobals) - sizeof(GrafPtr)));
+  }
+#endif /* !TARGET_API_MAC_CARBON */
+}
+
+NPError main(NPNetscapeFuncs* nsTable, NPPluginFuncs* pluginFuncs, NPP_ShutdownUPP* unloadUpp);
+
+#if !TARGET_API_MAC_CARBON
+#pragma export on
+#if GENERATINGCFM
+RoutineDescriptor mainRD = BUILD_ROUTINE_DESCRIPTOR(uppNPP_MainEntryProcInfo, main);
+#endif
+#pragma export off
+#endif /* !TARGET_API_MAC_CARBON */
+
+
+NPError main(NPNetscapeFuncs* aNPNFuncs, NPPluginFuncs* aNPPFuncs, NPP_ShutdownUPP* aUnloadUpp)
+{
+  NPError rv = NPERR_NO_ERROR;
+
+  if (aUnloadUpp == NULL)
+    rv = NPERR_INVALID_FUNCTABLE_ERROR;
+
+  if (rv == NPERR_NO_ERROR)
+    rv = fillNetscapeFunctionTable(aNPNFuncs);
+
+  if (rv == NPERR_NO_ERROR) {
+    // defer static constructors until the global functions are initialized.
+    __InitCode__();
+    rv = fillPluginFunctionTable(aNPPFuncs);
+  }
+
+  *aUnloadUpp = NewNPP_ShutdownProc(Private_Shutdown);
+  SetUpQD();
+  rv = Private_Initialize();
+	
+  return rv;
+}
+#endif //XP_MAC
