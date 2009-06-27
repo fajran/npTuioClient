@@ -42,7 +42,7 @@ public:
     NPError SetWindow(NPWindow *aWindow);
 
     NPError NewStream(NPMIMEType type, NPStream *stream, NPBool seekable,
-                      uint16_t *stype);
+                      uint16 *stype);
     NPError DestroyStream(NPStream * stream, NPError reason);
 
     int32_t WriteReady(NPStream *stream);

@@ -201,12 +201,12 @@ nsPluginInstance::nsPluginInstance(nsPluginCreateData* data)
             val = data->argv[i];
         }
 
-        else if ( ! strcasecmp(name.c_str(), "callback") )
+        else if ( ! strstr(name.c_str(), "callback") )
         {
             _callback = val;
         }
 
-        else if ( ! strcasecmp(name.c_str(), "port") )
+        else if ( ! strstr(name.c_str(), "port") )
         {
             _port = atoi(val.c_str());
         }
@@ -278,7 +278,7 @@ nsPluginInstance::WriteStatus(const char *msg) const
 
 NPError
 nsPluginInstance::NewStream(NPMIMEType /*type*/, NPStream* stream,
-                            NPBool /*seekable*/, uint16_t* /*stype*/)
+                            NPBool /*seekable*/, uint16* /*stype*/)
 {
 	D("[ns] NewStream");
 	return NPERR_NO_ERROR;

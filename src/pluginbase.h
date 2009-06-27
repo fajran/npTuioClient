@@ -61,7 +61,7 @@ class nsPluginInstanceBase
                             NPBool /*seekable*/, uint16* /*stype*/)         { return NPERR_NO_ERROR; }
   virtual NPError DestroyStream(NPStream* /*stream*/, NPError /*reason*/)   { return NPERR_NO_ERROR; }
   virtual void    StreamAsFile(NPStream* /*stream*/, const char* /*fname*/) { return; }
-  virtual int32   WriteReady(NPStream* /*stream*/)                      { return 0x0fffffff; }
+  virtual int32_t WriteReady(NPStream* /*stream*/)                      { return 0x0fffffff; }
   virtual int32   Write(NPStream* /*stream*/, int32 /*offset*/, 
                         int32 len, void* /*buffer*/)                    { return len; }
   virtual void    Print(NPPrint* /*printInfo*/)                         { return; }
