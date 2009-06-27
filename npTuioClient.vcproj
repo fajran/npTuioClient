@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="c:\xulrunner-sdk\sdk\include;TuioClient;TuioClient\oscpack"
+				AdditionalIncludeDirectories="npapi;TuioClient;TuioClient\oscpack"
 				PreprocessorDefinitions="WIN32;_WINDOWS;XP_WIN32;MOZILLA_STRICT_API;XPCOM_GLUE;XP_WIN;_X86_;OSC_HOST_LITTLE_ENDIAN"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -117,7 +117,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="c:\xulrunner-sdk\sdk\include;TuioClient;TuioClient\oscpack"
+				AdditionalIncludeDirectories="npapi;TuioClient;TuioClient\oscpack"
 				PreprocessorDefinitions="WIN32;_WINDOWS;XP_WIN32;MOZILLA_STRICT_API;XPCOM_GLUE;XP_WIN;_X86_;OSC_HOST_LITTLE_ENDIAN"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
