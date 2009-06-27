@@ -1,4 +1,8 @@
 *.o
 *.swp
 nptuio.so
-
+Debug/
+Release/
+npTuioClient.ncb
+npTuioClient.suo
+npTuioClient.vcproj.*
