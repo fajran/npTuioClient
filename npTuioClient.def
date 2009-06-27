@@ -1,4 +1,4 @@
-LIBRARY   npTuioClientPlugin
+LIBRARY   npTuioClient
 
 EXPORTS
 	NP_GetEntryPoints   @1
