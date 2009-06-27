@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head><title>TUIO Client plugin test</title>
+<style type="text/css">
+canvas { border: 1px solid black; }
+</style>
 <script type="text/javascript">
 
 var canvas;
@@ -63,9 +66,8 @@ function ol() {
 </head>
 <body onload="ol()">
 	
-<object id="p1" type="application/x-tuio">Plugin FAILED to load</object>
-
 <canvas id="c" width="300" height="300" style="top:0px; left:0px; width: 300px; height: 300px;"></canvas>
+<object id="tuio" type="application/x-tuio">Plugin FAILED to load</object>
 
 </body>
 </html>
