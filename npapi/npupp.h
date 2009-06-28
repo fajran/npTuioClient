@@ -701,9 +701,16 @@ extern "C" {
 
 /* plugin meta member functions */
 
+#ifdef XP_MAC
+NPError NP_Initialize(NPNetscapeFuncs *browserFuncs);
+NPError NP_GetEntryPoints(NPPluginFuncs *pluginFuncs);
+void NP_Shutdown(void);
+#else
 NP_EXPORT(char*)   NP_GetMIMEDescription(void);
 NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs*, NPPluginFuncs*);
 NP_EXPORT(NPError) NP_Shutdown(void);
+#endif
+
 NP_EXPORT(NPError) NP_GetValue(void *future, NPPVariable aVariable, void *aValue);
 
 #ifdef __cplusplus
