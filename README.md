@@ -3,13 +3,13 @@ npTuioClient
 
 TUIO Client plugin for web browsers.
 
-This is a TUIO Client implemented as a NPAPI-based browser plugin. It
+This is a TUIO Client implemented as an NPAPI-based browser plugin. It
 uses [reacTIVision's](http://reactivision.sourceforge.net/) TUIO
 Client as a base.
 
 The plugin constantly calls a javascript function `tuio_callback`
 whenever a new touch event arrives. Having this function called, you
-can start using javascript to manipulates HTML, Canvas, SVG, etc!
+can start using javascript to manipulate HTML, Canvas, SVG, etc!
 
 Check also the included examples to see how to use this plugin.
 
@@ -32,7 +32,8 @@ Compile
 
 ### Windows
 
-Open the Visual C++ project/solution file and build.
+Open the Visual C++ project/solution file and build. I use Visual C++
+2008 Express Edition.
 
 ### Linux
 
@@ -56,7 +57,7 @@ Firefox\Plugins`.
 
 ### Linux
 
-Put the plugin file under `~/.mozilla/plugins`
+Put the plugin file under `~/.mozilla/plugins`.
 
 Usage
 -----
@@ -65,7 +66,8 @@ Open one of the example files on your browser and start using your
 multi-touch display!
 
 You can open multiple tabs or windows as long as they belong to the
-same browser. The plugin can't be used from multiple browsers at a
-time. This is because the TUIO Client library can only be started once
-at a time.
+same browser instance. The plugin can't be used from multiple browsers
+at a time. This is because the TUIO Client library can only be started
+once at a time.
+
 
