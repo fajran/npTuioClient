@@ -10,7 +10,9 @@ whenever a new touch event arrives. Having this function called, you
 can start using javascript to manipulate HTML, Canvas, SVG, etc in
 order to create a multi-touch application!
 
-Check also the included examples to see how to use this plugin.
+Check the included examples to see how to use this plugin. Check also
+[TUIOjs](http://github.com/fajran/tuiojs/tree/master) to see more
+examples.
 
 The plugin has been tested and works on
 
