@@ -1,5 +1,0 @@
-//
-// Prefix header for all source files of the 'npTuioClient' target in the 'npTuioClient' project.
-//
-
-#include <Carbon/Carbon.h>
