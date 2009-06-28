@@ -13,9 +13,11 @@ can start using javascript to manipulate HTML, Canvas, SVG, etc!
 
 Check also the included examples to see how to use this plugin.
 
-The plugin has been tested and works on Firefox 3.0.10, Google Chrome
-2.0.172.33, and Safari 4.0 on Windows XP. It also works under Firefox
-3 on Ubuntu 8.04.
+The plugin has been tested and works on
+
+* Windows XP: Firefox 3.0.10, Google Chrome 2.0.172.33, and Safari 4.0.
+* Linux (Ubuntu 8.04): Firefox 3
+* Mac OS X 10.4.11: Firefox 3.5rc and Safari 4.0
 
 It doesn't work on Opera 9.64 on Windows XP nor Internet Explorer.
 Since Internet Explorer can't use NPAPI-based plugin, the plugin has
@@ -26,6 +28,7 @@ Download
 
 * [Windows](http://cloud.github.com/downloads/fajran/npTuioClient/npTuioClient-0.1-win.zip)
 * [Linux](http://cloud.github.com/downloads/fajran/npTuioClient/npTuioClient-0.1.1-linux.tar.gz) (Ubuntu 8.04 i386)
+* [Mac OS X](http://cloud.github.com/downloads/fajran/npTuioClient/npTuioClient-0.1.99-mac.zip)
 
 Compilation
 -----------
@@ -46,6 +49,10 @@ Basically what you need is
 * compile all *.cpp files except those that are under `win32` directory.
 * compile as a shared library.
 
+### Mac OS X
+
+Open the Xcode project and build. I use Xcode 2.5 under Mac OS X 10.4.11.
+
 Installation
 ------------
 
@@ -59,6 +66,10 @@ Firefox\Plugins`.
 
 Put the plugin file `npTuioClient.so` under `~/.mozilla/plugins`.
 
+### Mac OS X
+
+Put the plugin bundle `npTuioClient.plugin` under `~/Library/Internet Plug-Ins/`.
+
 Usage
 -----
 
@@ -69,5 +80,12 @@ You can open multiple tabs or windows as long as they belong to the
 same browser instance. The plugin can't be used from multiple browsers
 at a time. This is because the TUIO Client library can only be started
 once at a time.
+
+Issues
+------
+
+Firefox on Mac OS X crashes when the plugin is unloaded (all pages
+that use the plugin are closed). This doesn't happen on Safari 4.0
+
 
 
