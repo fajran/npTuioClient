@@ -8,8 +8,8 @@ uses [reacTIVision's](http://reactivision.sourceforge.net/) TUIO
 Client as a base.
 
 The plugin constantly calls a javascript function `tuio_callback`
-whenever a new touch event arrives. Having this function called, the
-rest is up to you :)
+whenever a new touch event arrives. Having this function called, you can start
+using javascript to manipulates HTML, Canvas, SVG, etc!
 
 Check also the included examples to see how to use this plugin.
 
