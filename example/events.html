@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head><title>TUIO Client plugin test</title>
+<style type="text/css">
+body { margin: 0px; overflow: hidden; }
+canvas { border: 1px solid black; }
+</style>
+<script type="text/javascript" src="tuio.js"></script>
+<script type="text/javascript">
+
+function log(text) { 
+	document.getElementById('log').innerHTML += text + "\n";
+}
+
+tuio.object_add(function(data) {
+	log("[object] add: x=" + data.x + ", y=" + data.y);
+});
+
+tuio.object_update(function(data) {
+	log("[object] update: x=" + data.x + ", y=" + data.y);
+});
+
+tuio.object_remove(function(data) {
+	log("[object] remove: x=" + data.x + ", y=" + data.y);
+});
+
+tuio.cursor_add(function(data) {
+	log("[cursor] add: x=" + data.x + ", y=" + data.y);
+});
+
+tuio.cursor_update(function(data) {
+	log("[cursor] update: x=" + data.x + ", y=" + data.y);
+});
+
+tuio.cursor_remove(function(data) {
+	log("[cursor] remove: x=" + data.x + ", y=" + data.y);
+});
+
+</script>
+</head>
+<body>
+	
+<object id="tuio" type="application/x-tuio">Plugin FAILED to load</object>
+
+<pre id="log"></pre>
+
+</body>
+</html>
