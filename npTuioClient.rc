@@ -28,8 +28,8 @@ LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,1,0,0
- PRODUCTVERSION 0,1,0,0
+ FILEVERSION 0,2,0,0
+ PRODUCTVERSION 0,2,0,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -49,7 +49,7 @@ BEGIN
             VALUE "FileDescription", "Tuio Client browser plugin\0"
             VALUE "FileExtents", "\0"
             VALUE "FileOpenName", "\0"
-            VALUE "FileVersion", "0, 1, 0, 0\0"
+            VALUE "FileVersion", "0, 2, 0, 0\0"
             VALUE "InternalName", "npTuioClient\0"
             VALUE "LegalCopyright", "Copyright © 2009\0"
             VALUE "LegalTrademarks", "\0"
@@ -57,7 +57,7 @@ BEGIN
             VALUE "OriginalFilename", "npTuioClient.dll\0"
             VALUE "PrivateBuild", "\0"
             VALUE "ProductName", "Tuio Client browser plugin\0"
-            VALUE "ProductVersion", "0, 1, 0, 0\0"
+            VALUE "ProductVersion", "0, 2, 0, 0\0"
             VALUE "SpecialBuild", "\0"
         END
     END
