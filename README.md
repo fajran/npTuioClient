@@ -36,14 +36,20 @@ Open the Visual C++ project/solution file and build.
 
 ### Linux
 
-TODO: The Makefile is broken. 
+TODO: The Makefile is broken.
+
+Basically what you need is
+- add `npapi`, `TuioClient`, and `TuioClient/oscpack` to include directories.
+- add definition `OSC_HOST_LITTLE_ENDIAN` when compiling the source code.
+- compile all *.cpp files except those that are under `win32` directory.
+- compile as a shared library.
 
 Installation
 ------------
 
 ### Windows
 
-Put the plugin file `npTuioClient.dll` under Firefox'/Mozilla'
+Put the plugin file `npTuioClient.dll` under Firefox'/Mozilla's
 `plugin` directory. Mine is `C:\Program Files\Mozilla
 Firefox\Plugins`.
 
