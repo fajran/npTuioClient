@@ -6,3 +6,6 @@ Release/
 npTuioClient.ncb
 npTuioClient.suo
 npTuioClient.vcproj.*
+npTuioClient.xcodeproj/*.mode1
+npTuioClient.xcodeproj/*.pbxuser
+build/
