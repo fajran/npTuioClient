@@ -40,14 +40,7 @@ Open the Visual C++ project/solution file and build. I use Visual C++
 
 ### Linux
 
-TODO: The Makefile is broken.
-
-Basically what you need is
-
-* add `npapi`, `TuioClient`, and `TuioClient/oscpack` to include directories.
-* add definition `OSC_HOST_LITTLE_ENDIAN` when compiling the source code.
-* compile all *.cpp files except those that are under `win32` directory.
-* compile as a shared library.
+Go to the project directory and type `make`.
 
 ### Mac OS X
 
