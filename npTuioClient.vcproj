@@ -207,6 +207,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\npplat.h"
+				>
+			</File>
+			<File
 				RelativePath=".\src\plugin.h"
 				>
 			</File>
