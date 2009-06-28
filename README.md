@@ -24,11 +24,11 @@ to be ported first to an ActiveX-based plugin.
 Download
 --------
 
-Download the windows binary build from
-<http://cloud.github.com/downloads/fajran/npTuioClient/npTuioClient-0.1-win.zip>
+* [Windows](http://cloud.github.com/downloads/fajran/npTuioClient/npTuioClient-0.1-win.zip)
+* [Linux](http://cloud.github.com/downloads/fajran/npTuioClient/npTuioClient-0.1.1-linux.tar.gz) (Ubuntu 8.04 i386)
 
-Compile
--------
+Compilation
+-----------
 
 ### Windows
 
@@ -57,7 +57,7 @@ Firefox\Plugins`.
 
 ### Linux
 
-Put the plugin file under `~/.mozilla/plugins`.
+Put the plugin file `npTuioClient.so` under `~/.mozilla/plugins`.
 
 Usage
 -----
