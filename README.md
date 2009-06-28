@@ -1,15 +1,14 @@
 npTuioClient
 ============
 
-TUIO Client plugin for web browsers.
-
-This is a TUIO Client implemented as an NPAPI-based browser plugin. It
-uses [reacTIVision's](http://reactivision.sourceforge.net/) TUIO
-Client as a base.
+npTuioClient is a TUIO Client implemented as an NPAPI-based browser
+plugin. It uses [reacTIVision's](http://reactivision.sourceforge.net/)
+TUIO Client as a base.
 
 The plugin constantly calls a javascript function `tuio_callback`
 whenever a new touch event arrives. Having this function called, you
-can start using javascript to manipulate HTML, Canvas, SVG, etc!
+can start using javascript to manipulate HTML, Canvas, SVG, etc in
+order to create a multi-touch application!
 
 Check also the included examples to see how to use this plugin.
 
@@ -20,8 +19,10 @@ The plugin has been tested and works on
 * Mac OS X 10.4.11: Firefox 3.5rc3 and Safari 4.0
 
 It doesn't work on Opera 9.64 on Windows XP nor Internet Explorer.
-Since Internet Explorer can't use NPAPI-based plugin, the plugin has
-to be ported first to an ActiveX-based plugin.
+
+To make the plugin works on Internet Explorer, the plugin has to be
+ported (or wrapped) to an ActiveX-based plugin first. This is needed
+since Internet Explorer doesn't support NPAPI-based plugin.
 
 Download
 --------
@@ -66,8 +67,8 @@ Put the plugin bundle `npTuioClient.plugin` under `~/Library/Internet Plug-Ins/`
 Usage
 -----
 
-Open one of the example files on your browser and start using your
-multi-touch display!
+Install the plugin, open one of the example files on your browser and
+start using your multi-touch display!
 
 You can open multiple tabs or windows as long as they belong to the
 same browser instance. The plugin can't be used from multiple browsers
@@ -79,12 +80,12 @@ Issues
 
 * Firefox on Mac OS X crashes when the plugin is unloaded (all pages
   that use the plugin are closed). This doesn't happen on Safari 4.0.
-
+  
   TODO: check plugin's shutfown and bundle unloading.
 
 * Firefox on Linux can't cleanly close the TUIO connection. So, the
   browser has to be restarted if the plugin want to be loaded again.
-
+  
   TODO: check TUIO Client's stop function.
 
 
