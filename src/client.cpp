@@ -6,7 +6,7 @@
 #include <TuioObject.h>
 #include <TuioCursor.h>
 
-inline void call(TuioEvent type, long sid, int fid, float x, float y, float a)
+static inline void call(TuioEvent type, long sid, int fid, float x, float y, float a)
 {
 	TuioEventData data;
 	data.type = type;
