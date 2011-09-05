@@ -58,6 +58,10 @@ Put the plugin file `npTuioClient.dll` under Firefox'/Mozilla's
 `plugin` directory. Mine is `C:\Program Files\Mozilla
 Firefox\Plugins`.
 
+If you are using Google Chrome, put the plugin under
+`C:\Users\<user>\AppData\Local\Google\Chrome\Application\Plugins`. Create the
+directory if necessary.
+
 ### Linux
 
 Put the plugin file `npTuioClient.so` under `~/.mozilla/plugins`.
