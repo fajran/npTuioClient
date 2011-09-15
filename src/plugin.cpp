@@ -17,6 +17,7 @@
 
 #include "plugin.h"
 
+#include <cstring>
 #include <iostream>
 #include <sstream>
 #define D(s) /*std::cerr << s << std::endl;*/

@@ -17,7 +17,7 @@ SRC= \
 CC=g++
 BIN=npTuioClient.so
 
-CFLAGS=-Os -I TuioClient/ -I TuioClient/oscpack/ -I npapi/ -I src/ -DOSC_HOST_LITTLE_ENDIAN
+CFLAGS=-Os -fPIC -I TuioClient/ -I TuioClient/oscpack/ -I npapi/ -I src/ -DOSC_HOST_LITTLE_ENDIAN
 LDFLAGS=-lpthread
 
 all : ${BIN}
