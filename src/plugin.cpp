@@ -142,6 +142,8 @@ NS_PluginGetValue(NPPVariable aVariable, void *aValue)
             break;
 
         case NPPVpluginNeedsXEmbed:
+            *(int*)aValue = PR_TRUE;
+            break;
 
         case NPPVpluginTimerInterval:
 
