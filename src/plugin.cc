@@ -16,9 +16,15 @@
 //
 
 #include "plugin.h"
+#include <stdio.h>
 
 #include "../npapi/npapi.h"
 #include "../npapi/npfunctions.h"
+
+#include "debug.h"
+
+#include "connection-manager.h"
+#include "adapter.h"
 
 #define PLUGIN_NAME             "TUIO Client"
 #define MIME_TYPES_HANDLED      "application/x-tuio"
@@ -26,12 +32,21 @@
 #define PLUGIN_DESCRIPTION      "TUIO Client plugin"
 #define PLUGIN_VERSION          "0.5"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+static ConnectionManager* connection_manager = NULL;
+
+static ConnectionManager* get_connection_manager() {
+  D("get_connection_manager => %p", connection_manager);
+  if (connection_manager == NULL) {
+    connection_manager = new ConnectionManager();
+    D("new ConnectionManager(): %p", connection_manager);
+  }
+  return connection_manager;
+}
 
 NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs* bFuncs,
                                  NPPluginFuncs* pFuncs) {
+  D("NP_Initialize");
+
   pFuncs->newp = NPP_New;
   pFuncs->destroy = NPP_Destroy;
   pFuncs->setwindow = NPP_SetWindow;
@@ -77,12 +92,54 @@ NP_EXPORT(NPError) NP_GetValue(void* future, NPPVariable variable,
 }
 
 NP_EXPORT(NPError) NP_Shutdown() {
+  D("NP_Shutdown");
+
+  delete connection_manager;
+  connection_manager = NULL;
+
   return NPERR_NO_ERROR;
 }
 
 NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode,
                 int16_t argc, char* argn[], char* argv[],
                 NPSavedData* saved) {
+  D("NPP_New");
+
+  const int port = 3333;
+  const char* callback = "tuio_callback";
+
+  ConnectionManager* manager = get_connection_manager();
+
+  Adapter* adapter = new NPAPIAdapter(instance, callback);
+  manager->Register(adapter, port);
+
+  D("NPP_New: instance=%p manager=%p adapter=%p", instance, manager, adapter);
+
+  instance->pdata = (void*)adapter;
+
+  // D("arguments: %d\n", argc);
+  // int port = 3333;
+  // char* callback = NULL;
+
+  // for (int i=0; i<argc; i++) {
+  //   if (strstr(argn[i], "port") == 0) {
+  //     port = atoi(argv[i]);
+  //   }
+  //   else if (strstr(argn[i], "callback") == 0) {
+  //     int len = strlen(argv[i]);
+  //     callback = (char*)malloc(len+1);
+  //     bzero(callback, len+1);
+  //     memcpy(callback, argv[i], len);
+  //   }
+  // }
+
+  // if (callback == NULL) {
+  //   callback = (char*)malloc(14);
+  //   sprintf(callback, "tuio_callback");
+  // }
+
+  
+
   // TODO instantiate instances
   //      if malloc fails, returns NPERR_OUT_OF_MEMORY_ERROR
   //      if error, returns NPERR_GENERIC_ERROR
@@ -90,7 +147,21 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode,
 }
 
 NPError NPP_Destroy(NPP instance, NPSavedData** save) {
-  // TODO free up memory
+  D("NPP_Destroy");
+
+  Adapter* adapter = (Adapter*)instance->pdata;
+  
+  ConnectionManager* manager = get_connection_manager();
+  D("NPP_Destroy: instance=%p manager=%p adapter=%p", instance, manager, adapter);
+
+  manager->Unregister(adapter);
+
+
+  D("NPP_Destroy OK");
+
+  delete adapter;
+  instance->pdata = NULL;
+
   return NPERR_NO_ERROR;
 }
 
@@ -153,8 +224,4 @@ NPError NPP_GetValue(NPP instance, NPPVariable variable, void* value) {
 NPError NPP_SetValue(NPP instance, NPNVariable variable, void* value) {
   return NPERR_GENERIC_ERROR;
 }
-
-#ifdef __cplusplus
-}
-#endif
 

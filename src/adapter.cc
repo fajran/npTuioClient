@@ -15,34 +15,18 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef CLIENT_H_
-#define CLIENT_H_
+#include "adapter.h"
 
-class Adapter;
+#include "debug.h"
 
-class ClientData;
+NPAPIAdapter::NPAPIAdapter(const void* plugin_instance, const char* callback)
+    : plugin_instance_(plugin_instance), callback_(callback) {
+}
 
-class Client {
- public:
-  Client(const int port);
-  ~Client();
+NPAPIAdapter::~NPAPIAdapter() {
+}
 
-  bool Start();
-  void Stop();
-  bool is_started();
-
-  void AddAdapter(Adapter* adapter);
-  void RemoveAdapter(Adapter* adapter);
-  int get_total_adapters();
-
-  int get_port() const {
-    return port_;
-  }
-
- private:
-  const int port_;
-  ClientData* data_;
-};
-
-#endif
+void NPAPIAdapter::Invoke(Event event) {
+  D("NPAPIAdapter::Invoke");
+}
 

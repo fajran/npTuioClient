@@ -15,34 +15,26 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef CLIENT_H_
-#define CLIENT_H_
+#ifndef EVENT_H_
+#define EVENT_H_
 
-class Adapter;
-
-class ClientData;
-
-class Client {
- public:
-  Client(const int port);
-  ~Client();
-
-  bool Start();
-  void Stop();
-  bool is_started();
-
-  void AddAdapter(Adapter* adapter);
-  void RemoveAdapter(Adapter* adapter);
-  int get_total_adapters();
-
-  int get_port() const {
-    return port_;
-  }
-
- private:
-  const int port_;
-  ClientData* data_;
+enum EventType {
+  EVENT_OBJECT_ADD    = 0,
+  EVENT_OBJECT_UPDATE = 1,
+  EVENT_OBJECT_REMOVE = 2,
+  EVENT_CURSOR_ADD    = 3,
+  EVENT_CURSOR_UPDATE = 4,
+  EVENT_CURSOR_REMOVE = 5,
 };
+
+typedef struct {
+  enum EventType type;
+  long fid;
+  int sid;
+  float x;
+  float y;
+  float a;
+} Event;
 
 #endif
 

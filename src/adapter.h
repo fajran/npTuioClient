@@ -15,33 +15,27 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef CLIENT_H_
-#define CLIENT_H_
+#ifndef ADAPTER_H_
+#define ADAPTER_H_
 
-class Adapter;
+#include "event.h"
 
-class ClientData;
-
-class Client {
+class Adapter {
  public:
-  Client(const int port);
-  ~Client();
+  virtual ~Adapter() {};
+  virtual void Invoke(Event event) = 0;
+};
 
-  bool Start();
-  void Stop();
-  bool is_started();
+class NPAPIAdapter : public Adapter {
+ public:
+  NPAPIAdapter(const void* plugin_instance, const char* callback);
+  ~NPAPIAdapter();
 
-  void AddAdapter(Adapter* adapter);
-  void RemoveAdapter(Adapter* adapter);
-  int get_total_adapters();
-
-  int get_port() const {
-    return port_;
-  }
+  virtual void Invoke(Event event);
 
  private:
-  const int port_;
-  ClientData* data_;
+  const void* plugin_instance_;
+  const char* callback_;
 };
 
 #endif

@@ -15,33 +15,22 @@
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#ifndef CLIENT_H_
-#define CLIENT_H_
+#ifndef CONNECTION_MANAGER_
+#define CONNECTION_MANAGER_
 
 class Adapter;
+class ConnectionManagerData;
 
-class ClientData;
-
-class Client {
+class ConnectionManager {
  public:
-  Client(const int port);
-  ~Client();
+  ConnectionManager();
+  ~ConnectionManager();
 
-  bool Start();
-  void Stop();
-  bool is_started();
-
-  void AddAdapter(Adapter* adapter);
-  void RemoveAdapter(Adapter* adapter);
-  int get_total_adapters();
-
-  int get_port() const {
-    return port_;
-  }
+  void Register(Adapter* adapter, const int port);
+  void Unregister(Adapter* adapter);
 
  private:
-  const int port_;
-  ClientData* data_;
+  ConnectionManagerData* data_;
 };
 
 #endif
