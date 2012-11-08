@@ -32,6 +32,8 @@
 #define PLUGIN_DESCRIPTION      "TUIO Client plugin"
 #define PLUGIN_VERSION          "0.5"
 
+static NPNetscapeFuncs* browser;
+
 static ConnectionManager* connection_manager = NULL;
 
 static ConnectionManager* get_connection_manager() {
@@ -43,9 +45,16 @@ static ConnectionManager* get_connection_manager() {
   return connection_manager;
 }
 
-NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs* bFuncs,
-                                 NPPluginFuncs* pFuncs) {
+#ifdef XP_MACOSX
+NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs* bFuncs) {
   D("NP_Initialize");
+
+  browser = bFuncs;
+  return NPERR_NO_ERROR;
+}
+
+NP_EXPORT(NPError) NP_GetEntryPoints(NPPluginFuncs* pFuncs) {
+  D("NP_GetEntryPoints");
 
   pFuncs->newp = NPP_New;
   pFuncs->destroy = NPP_Destroy;
@@ -63,6 +72,30 @@ NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs* bFuncs,
 
   return NPERR_NO_ERROR;
 }
+#else
+NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs* bFuncs,
+                                 NPPluginFuncs* pFuncs) {
+  D("NP_Initialize");
+
+  browser = bFuncs;
+
+  pFuncs->newp = NPP_New;
+  pFuncs->destroy = NPP_Destroy;
+  pFuncs->setwindow = NPP_SetWindow;
+  pFuncs->newstream = NPP_NewStream;
+  pFuncs->destroystream = NPP_DestroyStream;
+  pFuncs->asfile = NPP_StreamAsFile;
+  pFuncs->writeready = NPP_WriteReady;
+  pFuncs->write = NPP_Write;
+  pFuncs->print = NPP_Print;
+  pFuncs->event = NPP_HandleEvent;
+  pFuncs->urlnotify = NPP_URLNotify;
+  pFuncs->getvalue = NPP_GetValue;
+  pFuncs->setvalue = NPP_SetValue;
+
+  return NPERR_NO_ERROR;
+}
+#endif
 
 NP_EXPORT(char*) NP_GetPluginVersion() {
   return (char*)PLUGIN_VERSION;
