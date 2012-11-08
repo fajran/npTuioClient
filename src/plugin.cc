@@ -173,7 +173,33 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode,
   //   sprintf(callback, "tuio_callback");
   // }
 
-  
+#ifdef XP_MACOSX
+  /* Select the Core Graphics drawing model. */
+  NPBool supportsCoreGraphics = false;
+  if (browser->getvalue(instance, NPNVsupportsCoreGraphicsBool,
+                        &supportsCoreGraphics) == NPERR_NO_ERROR
+                                                  && supportsCoreGraphics) {
+    browser->setvalue(instance, NPPVpluginDrawingModel,
+                      (void*)NPDrawingModelCoreGraphics);
+  } else {
+    printf("CoreGraphics drawing model not supported, "
+           "can't create a plugin instance.\n");
+    return NPERR_INCOMPATIBLE_VERSION_ERROR;
+  }
+
+  /* Select the Cocoa event model. */
+  NPBool supportsCocoaEvents = false;
+  if (browser->getvalue(instance, NPNVsupportsCocoaBool,
+                        &supportsCocoaEvents) == NPERR_NO_ERROR
+                                                 && supportsCocoaEvents) {
+    browser->setvalue(instance, NPPVpluginEventModel, (void*)NPEventModelCocoa);
+  } else {
+    printf("Cocoa event model not supported, "
+           "can't create a plugin instance.\n");
+    return NPERR_INCOMPATIBLE_VERSION_ERROR;
+  }
+#endif
+
 
   // TODO instantiate instances
   //      if malloc fails, returns NPERR_OUT_OF_MEMORY_ERROR
