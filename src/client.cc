@@ -41,7 +41,7 @@ class Listener : public TuioListener {
   };
 
   void addTuioObject(TuioObject *object) {
-    Event event;
+    TuioEvent event;
     event.type = EVENT_OBJECT_ADD;
     event.fid = object->getFiducialID();
     event.sid = object->getSessionID();
@@ -53,7 +53,7 @@ class Listener : public TuioListener {
   }
 
   void updateTuioObject(TuioObject *object) {
-    Event event;
+    TuioEvent event;
     event.type = EVENT_OBJECT_UPDATE;
     event.fid = object->getFiducialID();
     event.sid = object->getSessionID();
@@ -65,7 +65,7 @@ class Listener : public TuioListener {
   }
 
   void removeTuioObject(TuioObject *object) {
-    Event event;
+    TuioEvent event;
     event.type = EVENT_OBJECT_REMOVE;
     event.fid = object->getFiducialID();
     event.sid = object->getSessionID();
@@ -77,7 +77,7 @@ class Listener : public TuioListener {
   }
 
   void addTuioCursor(TuioCursor *cursor) {
-    Event event;
+    TuioEvent event;
     event.type = EVENT_CURSOR_ADD;
     event.fid = cursor->getFingerID();
     event.sid = cursor->getSessionID();
@@ -89,7 +89,7 @@ class Listener : public TuioListener {
   }
 
   void updateTuioCursor(TuioCursor *cursor) {
-    Event event;
+    TuioEvent event;
     event.type = EVENT_CURSOR_UPDATE;
     event.fid = cursor->getFingerID();
     event.sid = cursor->getSessionID();
@@ -101,7 +101,7 @@ class Listener : public TuioListener {
   }
 
   void removeTuioCursor(TuioCursor *cursor) {
-    Event event;
+    TuioEvent event;
     event.type = EVENT_CURSOR_REMOVE;
     event.fid = cursor->getFingerID();
     event.sid = cursor->getSessionID();
@@ -116,7 +116,7 @@ class Listener : public TuioListener {
   }
 
  private:
-  void Invoke(Event event) {
+  void Invoke(TuioEvent event) {
     std::list<Adapter*>::iterator end = adapters_->end();
 
     std::list<Adapter*>::iterator it;

@@ -18,23 +18,23 @@
 #ifndef EVENT_H_
 #define EVENT_H_
 
-enum EventType {
+typedef enum {
   EVENT_OBJECT_ADD    = 0,
   EVENT_OBJECT_UPDATE = 1,
   EVENT_OBJECT_REMOVE = 2,
   EVENT_CURSOR_ADD    = 3,
   EVENT_CURSOR_UPDATE = 4,
-  EVENT_CURSOR_REMOVE = 5,
-};
+  EVENT_CURSOR_REMOVE = 5
+} TuioEventType;
 
 typedef struct {
-  enum EventType type;
+  TuioEventType type;
   long fid;
   int sid;
   float x;
   float y;
   float a;
-} Event;
+} TuioEvent;
 
 #endif
 

@@ -23,7 +23,7 @@
 class Adapter {
  public:
   virtual ~Adapter() {};
-  virtual void Invoke(Event event) = 0;
+  virtual void Invoke(TuioEvent event) = 0;
 };
 
 class NPAPIAdapter : public Adapter {
@@ -31,7 +31,7 @@ class NPAPIAdapter : public Adapter {
   NPAPIAdapter(const void* plugin_instance, const char* callback);
   ~NPAPIAdapter();
 
-  virtual void Invoke(Event event);
+  virtual void Invoke(TuioEvent event);
 
  private:
   const void* plugin_instance_;

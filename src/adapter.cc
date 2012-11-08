@@ -26,7 +26,7 @@ NPAPIAdapter::NPAPIAdapter(const void* plugin_instance, const char* callback)
 NPAPIAdapter::~NPAPIAdapter() {
 }
 
-void NPAPIAdapter::Invoke(Event event) {
+void NPAPIAdapter::Invoke(TuioEvent event) {
   D("NPAPIAdapter::Invoke");
 }
 
