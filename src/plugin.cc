@@ -127,8 +127,10 @@ NP_EXPORT(NPError) NP_GetValue(void* future, NPPVariable variable,
 NP_EXPORT(NPError) NP_Shutdown() {
   D("NP_Shutdown");
 
-  delete connection_manager;
-  connection_manager = NULL;
+  if (connection_manager) {
+    delete connection_manager;
+    connection_manager = NULL;
+  }
 
   return NPERR_NO_ERROR;
 }
