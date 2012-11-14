@@ -9,24 +9,24 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleVersion</key>
-	<string>1.0</string>
+	<string>1.5</string>
 	<key>CFBundleIdentifier</key>
-	<string>org.mozilla.basicPlugin</string>
+	<string>id.web.fajran.tuio</string>
 	<key>CFBundleName</key>
 	<string>${PRODUCT_NAME}</string>
 	<key>CFBundleExecutable</key>
 	<string>${EXECUTABLE_NAME}</string>
 	<key>WebPluginMIMETypes</key>
 	<dict>
-		<key>application/basic-plugin</key>
+		<key>application/x-tuio</key>
 		<dict>
 			<key>WebPluginTypeDescription</key>
-			<string>Basic plugin sample</string>
+			<string>Tuio Client browser plugin</string>
 		</dict>
 	</dict>
 	<key>WebPluginDescription</key>
-	<string>Basic plugin sample, part of the Gecko NPAPI SDK</string>
+	<string>Tuio Client browser plugin</string>
 	<key>WebPluginName</key>
-	<string>Basic Plugin Sample</string>
+	<string>Tuio Client</string>
 </dict>
 </plist>
