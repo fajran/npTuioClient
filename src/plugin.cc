@@ -32,7 +32,7 @@
 #define PLUGIN_DESCRIPTION      "TUIO Client plugin"
 #define PLUGIN_VERSION          "0.5"
 
-static NPNetscapeFuncs* browser;
+static NPNetscapeFuncs browser;
 
 static ConnectionManager* connection_manager = NULL;
 
@@ -43,6 +43,107 @@ static ConnectionManager* get_connection_manager() {
     D("new ConnectionManager(): %p", connection_manager);
   }
   return connection_manager;
+}
+
+static void fill_netscape_functions(NPNetscapeFuncs* srcFuncs,
+                                    NPNetscapeFuncs* dstFuncs) {
+  // Taken and adapted from FireBreath
+
+  dstFuncs->size = srcFuncs->size;
+  dstFuncs->version = srcFuncs->version;
+  dstFuncs->geturl = srcFuncs->geturl;
+  dstFuncs->posturl = srcFuncs->posturl;
+  dstFuncs->requestread = srcFuncs->requestread;
+  dstFuncs->newstream = srcFuncs->newstream;
+  dstFuncs->write = srcFuncs->write;
+  dstFuncs->destroystream = srcFuncs->destroystream;
+  dstFuncs->status = srcFuncs->status;
+  dstFuncs->uagent = srcFuncs->uagent;
+  dstFuncs->memalloc = srcFuncs->memalloc;
+  dstFuncs->memfree = srcFuncs->memfree;
+  dstFuncs->memflush = srcFuncs->memflush;
+  dstFuncs->reloadplugins = srcFuncs->reloadplugins;
+  dstFuncs->geturlnotify = srcFuncs->geturlnotify;
+  dstFuncs->posturlnotify = srcFuncs->posturlnotify;
+  dstFuncs->getvalue = srcFuncs->getvalue;
+  dstFuncs->setvalue = srcFuncs->setvalue;
+  dstFuncs->invalidaterect = srcFuncs->invalidaterect;
+  dstFuncs->invalidateregion = srcFuncs->invalidateregion;
+  dstFuncs->forceredraw = srcFuncs->forceredraw;
+  dstFuncs->getstringidentifier = srcFuncs->getstringidentifier;
+  dstFuncs->getstringidentifiers = srcFuncs->getstringidentifiers;
+  dstFuncs->getintidentifier = srcFuncs->getintidentifier;
+  dstFuncs->identifierisstring = srcFuncs->identifierisstring;
+  dstFuncs->utf8fromidentifier = srcFuncs->utf8fromidentifier;
+  dstFuncs->intfromidentifier = srcFuncs->intfromidentifier;
+  dstFuncs->createobject = srcFuncs->createobject;
+  dstFuncs->retainobject = srcFuncs->retainobject;
+  dstFuncs->releaseobject = srcFuncs->releaseobject;
+  dstFuncs->invoke = srcFuncs->invoke;
+  dstFuncs->invokeDefault = srcFuncs->invokeDefault;
+  dstFuncs->evaluate = srcFuncs->evaluate;
+  dstFuncs->getproperty = srcFuncs->getproperty;
+  dstFuncs->setproperty = srcFuncs->setproperty;
+  dstFuncs->removeproperty = srcFuncs->removeproperty;
+  dstFuncs->hasproperty = srcFuncs->hasproperty;
+  dstFuncs->hasmethod = srcFuncs->hasmethod;
+  dstFuncs->releasevariantvalue = srcFuncs->releasevariantvalue;
+  dstFuncs->setexception = srcFuncs->setexception;
+  dstFuncs->construct = srcFuncs->construct;
+
+  if (srcFuncs->version >= NPVERS_MACOSX_HAS_COCOA_EVENTS) { // 23
+    dstFuncs->scheduletimer = srcFuncs->scheduletimer;
+    dstFuncs->unscheduletimer = srcFuncs->unscheduletimer;
+  }
+
+  if (srcFuncs->version >= NPVERS_HAS_STREAMOUTPUT) { // 8
+    // ?
+  }
+  if (srcFuncs->version >= NPVERS_HAS_NOTIFICATION) { // 9
+    // ?
+  }
+  if (srcFuncs->version >= NPVERS_HAS_LIVECONNECT) { // 9
+    // ?
+  }
+  if (srcFuncs->version >= NPVERS_68K_HAS_LIVECONNECT) { // 11
+    // ?
+  }
+  if (srcFuncs->version >= NPVERS_HAS_WINDOWLESS) { // 11
+    // ?
+  }
+  if (srcFuncs->version >= NPVERS_HAS_XPCONNECT_SCRIPTING) { // 13
+    // ?
+  }
+  if (srcFuncs->version >= NPVERS_HAS_NPRUNTIME_SCRIPTING) { // 14
+    // ?
+  }
+  if (srcFuncs->version >= NPVERS_HAS_FORM_VALUES) { // 15
+    // ?
+  }
+  if (srcFuncs->version >= NPVERS_HAS_POPUPS_ENABLED_STATE) {
+    dstFuncs->pushpopupsenabledstate = srcFuncs->pushpopupsenabledstate;
+    dstFuncs->poppopupsenabledstate = srcFuncs->poppopupsenabledstate;
+  }
+  if (srcFuncs->version >= NPVERS_HAS_RESPONSE_HEADERS) { // 17
+    // ?
+  }
+  if (srcFuncs->version >= NPVERS_HAS_NPOBJECT_ENUM) { // 18
+    dstFuncs->enumerate = srcFuncs->enumerate;
+  }
+#ifndef XP_MACOSX
+  // Mac OS X' version is taken care of separately
+  if (srcFuncs->version >= NPVERS_HAS_PLUGIN_THREAD_ASYNC_CALL) { // 19
+    dstFuncs->pluginthreadasynccall = srcFuncs->pluginthreadasynccall;
+  }
+#endif
+  if (srcFuncs->version >= NPVERS_HAS_ALL_NETWORK_STREAMS) { // 20
+    // ?
+  }
+  if (srcFuncs->version >= NPVERS_HAS_URL_AND_AUTH_INFO) { // 21
+    dstFuncs->getvalueforurl = srcFuncs->getvalueforurl;
+    dstFuncs->setvalueforurl = srcFuncs->setvalueforurl;
+    dstFuncs->getauthenticationinfo = srcFuncs->getauthenticationinfo;
+  }
 }
 
 static void fill_plugin_functions(NPPluginFuncs* pFuncs) {
@@ -65,7 +166,8 @@ static void fill_plugin_functions(NPPluginFuncs* pFuncs) {
 NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs* bFuncs) {
   D("NP_Initialize");
 
-  browser = bFuncs;
+  fill_netscape_functions(bFuncs, &browser);
+
   return NPERR_NO_ERROR;
 }
 
@@ -81,8 +183,7 @@ NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs* bFuncs,
                                  NPPluginFuncs* pFuncs) {
   D("NP_Initialize");
 
-  browser = bFuncs;
-
+  fill_netscape_functions(bFuncs, &browser);
   fill_plugin_functions(pFuncs);
 
   return NPERR_NO_ERROR;
@@ -169,11 +270,11 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode,
 #ifdef XP_MACOSX
   /* Select the Core Graphics drawing model. */
   NPBool supportsCoreGraphics = false;
-  if (browser->getvalue(instance, NPNVsupportsCoreGraphicsBool,
-                        &supportsCoreGraphics) == NPERR_NO_ERROR
+  if (browser.getvalue(instance, NPNVsupportsCoreGraphicsBool,
+                       &supportsCoreGraphics) == NPERR_NO_ERROR
                                                   && supportsCoreGraphics) {
-    browser->setvalue(instance, NPPVpluginDrawingModel,
-                      (void*)NPDrawingModelCoreGraphics);
+    browser.setvalue(instance, NPPVpluginDrawingModel,
+                     (void*)NPDrawingModelCoreGraphics);
   } else {
     printf("CoreGraphics drawing model not supported, "
            "can't create a plugin instance.\n");
@@ -182,10 +283,10 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode,
 
   /* Select the Cocoa event model. */
   NPBool supportsCocoaEvents = false;
-  if (browser->getvalue(instance, NPNVsupportsCocoaBool,
-                        &supportsCocoaEvents) == NPERR_NO_ERROR
+  if (browser.getvalue(instance, NPNVsupportsCocoaBool,
+                       &supportsCocoaEvents) == NPERR_NO_ERROR
                                                  && supportsCocoaEvents) {
-    browser->setvalue(instance, NPPVpluginEventModel, (void*)NPEventModelCocoa);
+    browser.setvalue(instance, NPPVpluginEventModel, (void*)NPEventModelCocoa);
   } else {
     printf("Cocoa event model not supported, "
            "can't create a plugin instance.\n");
