@@ -30,7 +30,7 @@
 #define MIME_TYPES_HANDLED      "application/x-tuio"
 #define MIME_TYPES_DESCRIPTION  MIME_TYPES_HANDLED":tuio:"PLUGIN_NAME
 #define PLUGIN_DESCRIPTION      "TUIO Client plugin"
-#define PLUGIN_VERSION          "0.5"
+#define PLUGIN_VERSION          "1.5b1"
 
 static NPNetscapeFuncs browser;
 
