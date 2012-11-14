@@ -1,30 +1,37 @@
-
-SRC= \
-	./TuioClient/oscpack/ip/IpEndpointName.cpp \
-	./TuioClient/oscpack/ip/posix/UdpSocket.cpp \
-	./TuioClient/oscpack/ip/posix/NetworkingUtils.cpp \
-	./TuioClient/oscpack/osc/OscPrintReceivedElements.cpp \
-	./TuioClient/oscpack/osc/OscReceivedElements.cpp \
-	./TuioClient/oscpack/osc/OscTypes.cpp \
-	./TuioClient/oscpack/osc/OscOutboundPacketStream.cpp \
-	./TuioClient/TuioClient.cpp \
-	./src/npn_gate.cpp \
-	./src/npp_gate.cpp \
-	./src/client.cpp \
-	./src/np_entry.cpp \
-	./src/plugin.cpp
-
 CC=g++
-BIN=npTuioClient.so
+CFLAGS=-Wall -DXP_UNIX=1 -fPIC -g -ITuioClient -ITuioClient/oscpack -DOSC_HOST_LITTLE_ENDIAN
+TUIO_CLIENT_SRC=TuioClient/TuioClient.cpp \
+	TuioClient/oscpack/osc/OscReceivedElements.cpp \
+	TuioClient/oscpack/osc/OscOutboundPacketStream.cpp \
+	TuioClient/oscpack/osc/OscTypes.cpp \
+	TuioClient/oscpack/osc/OscPrintReceivedElements.cpp \
+	TuioClient/oscpack/ip/posix/NetworkingUtils.cpp \
+	TuioClient/oscpack/ip/posix/UdpSocket.cpp \
+	TuioClient/oscpack/ip/IpEndpointName.cpp
+PLUGIN_SRC=src/plugin.cc \
+	src/client.cc \
+	src/connection-manager.cc \
+	src/adapter-npapi.cc
 
-CFLAGS=-Os -fPIC -I TuioClient/ -I TuioClient/oscpack/ -I npapi/ -I src/ -DOSC_HOST_LITTLE_ENDIAN
-LDFLAGS=-lpthread
+TUIO_CLIENT_OBJ=$(TUIO_CLIENT_SRC:.cpp=.o)
+PLUGIN_OBJ=$(PLUGIN_SRC:.cc=.o)
 
-all : ${BIN}
+TARGET=npTuioClient.so
+
+all : $(TARGET)
+
+$(TARGET) : $(PLUGIN_OBJ) $(TUIO_CLIENT_OBJ)
+	$(CC) $(CFLAGS) -shared $+ -o $@
+
+.cc.o :
+	$(CC) $(CFLAGS) $< -c -o $@
+
+.cpp.o :
+	$(CC) $(CFLAGS) $< -c -o $@
 
 clean :
-	rm ${BIN}
+	rm $(TARGET)
+	rm $(PLUGIN_OBJ)
+	rm $(TUIO_CLIENT_OBJ)
 
-${BIN} : ${SRC}
-	${CC} -o $@ -shared ${CFLAGS} ${LDFLAGS} $+ 
 
