@@ -1,3 +1,8 @@
+!!! THIS BRANCH CONTAINS A WORK-IN-PROGRESS CODE !!!
+
+The code is not guaranteed to compile, things may crash, computers my explode. Use it with care.
+
+
 npTuioClient
 ============
 
