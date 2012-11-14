@@ -45,6 +45,22 @@ static ConnectionManager* get_connection_manager() {
   return connection_manager;
 }
 
+static void fill_plugin_functions(NPPluginFuncs* pFuncs) {
+  pFuncs->newp = NPP_New;
+  pFuncs->destroy = NPP_Destroy;
+  pFuncs->setwindow = NPP_SetWindow;
+  pFuncs->newstream = NPP_NewStream;
+  pFuncs->destroystream = NPP_DestroyStream;
+  pFuncs->asfile = NPP_StreamAsFile;
+  pFuncs->writeready = NPP_WriteReady;
+  pFuncs->write = NPP_Write;
+  pFuncs->print = NPP_Print;
+  pFuncs->event = NPP_HandleEvent;
+  pFuncs->urlnotify = NPP_URLNotify;
+  pFuncs->getvalue = NPP_GetValue;
+  pFuncs->setvalue = NPP_SetValue;
+}
+
 #ifdef XP_MACOSX
 NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs* bFuncs) {
   D("NP_Initialize");
@@ -56,19 +72,7 @@ NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs* bFuncs) {
 NP_EXPORT(NPError) NP_GetEntryPoints(NPPluginFuncs* pFuncs) {
   D("NP_GetEntryPoints");
 
-  pFuncs->newp = NPP_New;
-  pFuncs->destroy = NPP_Destroy;
-  pFuncs->setwindow = NPP_SetWindow;
-  pFuncs->newstream = NPP_NewStream;
-  pFuncs->destroystream = NPP_DestroyStream;
-  pFuncs->asfile = NPP_StreamAsFile;
-  pFuncs->writeready = NPP_WriteReady;
-  pFuncs->write = NPP_Write;
-  pFuncs->print = NPP_Print;
-  pFuncs->event = NPP_HandleEvent;
-  pFuncs->urlnotify = NPP_URLNotify;
-  pFuncs->getvalue = NPP_GetValue;
-  pFuncs->setvalue = NPP_SetValue;
+  fill_plugin_functions(pFuncs);
 
   return NPERR_NO_ERROR;
 }
@@ -79,19 +83,7 @@ NP_EXPORT(NPError) NP_Initialize(NPNetscapeFuncs* bFuncs,
 
   browser = bFuncs;
 
-  pFuncs->newp = NPP_New;
-  pFuncs->destroy = NPP_Destroy;
-  pFuncs->setwindow = NPP_SetWindow;
-  pFuncs->newstream = NPP_NewStream;
-  pFuncs->destroystream = NPP_DestroyStream;
-  pFuncs->asfile = NPP_StreamAsFile;
-  pFuncs->writeready = NPP_WriteReady;
-  pFuncs->write = NPP_Write;
-  pFuncs->print = NPP_Print;
-  pFuncs->event = NPP_HandleEvent;
-  pFuncs->urlnotify = NPP_URLNotify;
-  pFuncs->getvalue = NPP_GetValue;
-  pFuncs->setvalue = NPP_SetValue;
+  fill_plugin_functions(pFuncs);
 
   return NPERR_NO_ERROR;
 }
