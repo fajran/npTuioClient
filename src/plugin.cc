@@ -24,7 +24,7 @@
 #include "debug.h"
 
 #include "connection-manager.h"
-#include "adapter.h"
+#include "adapter-npapi.h"
 
 #define PLUGIN_NAME             "TUIO Client"
 #define MIME_TYPES_HANDLED      "application/x-tuio"
