@@ -23,19 +23,11 @@
 class Adapter {
  public:
   virtual ~Adapter() {};
+
+  virtual void Init() = 0;
+  virtual void Destroy() = 0;
+
   virtual void Invoke(TuioEvent event) = 0;
-};
-
-class NPAPIAdapter : public Adapter {
- public:
-  NPAPIAdapter(const void* plugin_instance, const char* callback);
-  ~NPAPIAdapter();
-
-  virtual void Invoke(TuioEvent event);
-
- private:
-  const void* plugin_instance_;
-  const char* callback_;
 };
 
 #endif

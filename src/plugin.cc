@@ -146,6 +146,7 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode,
   ConnectionManager* manager = get_connection_manager();
 
   Adapter* adapter = new NPAPIAdapter(instance, callback);
+  adapter->Init();
   manager->Register(adapter, port);
 
   D("NPP_New: instance=%p manager=%p adapter=%p", instance, manager, adapter);
@@ -216,7 +217,7 @@ NPError NPP_Destroy(NPP instance, NPSavedData** save) {
   D("NPP_Destroy: instance=%p manager=%p adapter=%p", instance, manager, adapter);
 
   manager->Unregister(adapter);
-
+  adapter->Destroy();
 
   D("NPP_Destroy OK");
 
