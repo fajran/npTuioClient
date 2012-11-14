@@ -18,11 +18,14 @@
 #ifndef ADAPTER_NPAPI_H_
 #define ADAPTER_NPAPI_H_
 
+#include "../npapi/npfunctions.h"
 #include "adapter.h"
 
 class NPAPIAdapter : public Adapter {
 public:
-  NPAPIAdapter(const void* plugin_instance, const char* callback);
+  NPAPIAdapter(const NPNetscapeFuncs* browser,
+               const void* plugin_instance,
+               const char* callback);
   ~NPAPIAdapter();
 
   virtual void Init();
@@ -35,6 +38,7 @@ public:
   }
 
 private:
+  const NPNetscapeFuncs* browser_;
   const void* plugin_instance_;
   const char* callback_;
 };

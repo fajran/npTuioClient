@@ -238,7 +238,7 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode,
 
   ConnectionManager* manager = get_connection_manager();
 
-  Adapter* adapter = new NPAPIAdapter(instance, callback);
+  Adapter* adapter = new NPAPIAdapter(&browser, instance, callback);
   adapter->Init();
   manager->Register(adapter, port);
 
