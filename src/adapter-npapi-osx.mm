@@ -26,12 +26,14 @@
 
 @interface AsyncCaller : NSObject
 {
+  NPNetscapeFuncs* browser_;
   void* pluginInstance_;
   TuioEvent event_;
 }
 
-- (id)initWithPluginInstance:(void*)plugin_instance
-                andTuioEvent:(TuioEvent)event;
+- (id)initWithBrowser:(NPNetscapeFuncs*)browser
+       pluginInstance:(void*)pluginInstance
+         andTuioEvent:(TuioEvent)event;
 
 - (void)invoke;
 
@@ -39,10 +41,12 @@
 
 @implementation AsyncCaller
 
-- (id)initWithPluginInstance:(void*)pluginInstance
-                andTuioEvent:(TuioEvent)event {
+- (id)initWithBrowser:(NPNetscapeFuncs*)browser
+       pluginInstance:(void*)pluginInstance
+         andTuioEvent:(TuioEvent)event {
   id res = [super init];
 
+  browser_ = browser;
   pluginInstance_ = pluginInstance;
   event_ = event;
 
@@ -69,7 +73,7 @@
 	url << event_.a << ");";
   D("url: %s", url.str().c_str());
 
-  // TODO: NPN_GetURL((NPP)pluginInstance_, url.str().c_str(), "_self");
+  browser_->geturl((NPP)pluginInstance_, url.str().c_str(), "_self");
 
   [self release];
 }
@@ -77,8 +81,10 @@
 @end
 
 
-NPAPIAdapter::NPAPIAdapter(const void* plugin_instance, const char* callback)
-  : plugin_instance_(plugin_instance), callback_(callback) {
+NPAPIAdapter::NPAPIAdapter(const NPNetscapeFuncs* browser,
+                           const void* plugin_instance,
+                           const char* callback)
+  : browser_(browser), plugin_instance_(plugin_instance), callback_(callback) {
 }
 
 NPAPIAdapter::~NPAPIAdapter() {
@@ -94,7 +100,8 @@ void NPAPIAdapter::Invoke(TuioEvent event) {
   D("NPAPIAdapter::Invoke");
 
   AsyncCaller* caller = [[AsyncCaller alloc]
-                         initWithPluginInstance:(void*)plugin_instance_
-                                               andTuioEvent:event];
+                         initWithBrowser:(NPNetscapeFuncs*)browser_
+                          pluginInstance:(void*)plugin_instance_
+                            andTuioEvent:event];
   [caller invoke];
 }
