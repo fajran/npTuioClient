@@ -28,11 +28,13 @@
 {
   NPNetscapeFuncs* browser_;
   void* pluginInstance_;
+  char* callback_;
   TuioEvent event_;
 }
 
 - (id)initWithBrowser:(NPNetscapeFuncs*)browser
        pluginInstance:(void*)pluginInstance
+             callback:(const char*)callback
          andTuioEvent:(TuioEvent)event;
 
 - (void)invoke;
@@ -43,11 +45,13 @@
 
 - (id)initWithBrowser:(NPNetscapeFuncs*)browser
        pluginInstance:(void*)pluginInstance
+             callback:(const char*)callback
          andTuioEvent:(TuioEvent)event {
   id res = [super init];
 
   browser_ = browser;
   pluginInstance_ = pluginInstance;
+  callback_ = (char*)callback;
   event_ = event;
 
   return res;
@@ -64,7 +68,7 @@
   D("AsyncCaller::invokeJavascript");
 
   std::stringstream url;
-	url << "javascript:tuio_callback(";
+	url << "javascript:" << callback_ << "(";
 	url << event_.type << ", ";
 	url << event_.sid << ", ";
 	url << event_.fid << ", ";
@@ -102,6 +106,7 @@ void NPAPIAdapter::Invoke(TuioEvent event) {
   AsyncCaller* caller = [[AsyncCaller alloc]
                          initWithBrowser:(NPNetscapeFuncs*)browser_
                           pluginInstance:(void*)plugin_instance_
+                                callback:callback_
                             andTuioEvent:event];
   [caller invoke];
 }

@@ -24,11 +24,13 @@
 struct Data {
   const NPNetscapeFuncs* browser;
   const void* plugin_instance;
+  const char* callback;
   const TuioEvent event;
 
   Data(const NPNetscapeFuncs* browser, const void* plugin_instance,
-       const TuioEvent event)
-      : browser(browser), plugin_instance(plugin_instance), event(event) {
+       const char* callback, const TuioEvent event)
+      : browser(browser), plugin_instance(plugin_instance),
+        callback(callback), event(event) {
   }
 };
 
@@ -38,7 +40,7 @@ static void call_javascript(void* param) {
   D("AsyncCaller::invokeJavascript");
 
   std::stringstream url;
-	url << "javascript:tuio_callback(";
+	url << "javascript:" << data->callback << "(";
 	url << data->event.type << ", ";
 	url << data->event.sid << ", ";
 	url << data->event.fid << ", ";
@@ -70,7 +72,7 @@ void NPAPIAdapter::Destroy() {
 }
 
 void NPAPIAdapter::Invoke(TuioEvent event) {
-  Data* data = new Data(browser_, plugin_instance_, event);
+  Data* data = new Data(browser_, plugin_instance_, callback_, event);
   browser_->pluginthreadasynccall(
     (NPP)plugin_instance_, call_javascript, data);
 }
