@@ -18,7 +18,8 @@
 #include "plugin.h"
 
 #include <string>
-#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
 #include "../npapi/npapi.h"
 #include "../npapi/npfunctions.h"
@@ -33,6 +34,9 @@
 #define MIME_TYPES_DESCRIPTION  MIME_TYPES_HANDLED":tuio:"PLUGIN_NAME
 #define PLUGIN_DESCRIPTION      "TUIO Client plugin"
 #define PLUGIN_VERSION          "1.5b1"
+
+#define DEFAULT_PORT      3333
+#define DEFAULT_CALLBACK  "tuio_callback"
 
 static NPNetscapeFuncs browser;
 
@@ -235,8 +239,19 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode,
                 NPSavedData* saved) {
   D("NPP_New");
 
-  const int port = 3333;
-  const std::string callback("tuio_callback");
+  int port = DEFAULT_PORT;
+  std::string callback(DEFAULT_CALLBACK);
+
+  for (int i=0; i<argc; i++) {
+    if (strcmp(argn[i], "port") == 0) {
+      port = atoi(argv[i]);
+    }
+    else if (strcmp(argn[i], "callback") == 0) {
+      callback = std::string(argv[i]);
+    }
+  }
+
+  D("port: %d, callback: %s", port, callback.c_str());
 
   ConnectionManager* manager = get_connection_manager();
 
@@ -247,27 +262,6 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode,
   D("NPP_New: instance=%p manager=%p adapter=%p", instance, manager, adapter);
 
   instance->pdata = (void*)adapter;
-
-  // D("arguments: %d\n", argc);
-  // int port = 3333;
-  // char* callback = NULL;
-
-  // for (int i=0; i<argc; i++) {
-  //   if (strstr(argn[i], "port") == 0) {
-  //     port = atoi(argv[i]);
-  //   }
-  //   else if (strstr(argn[i], "callback") == 0) {
-  //     int len = strlen(argv[i]);
-  //     callback = (char*)malloc(len+1);
-  //     bzero(callback, len+1);
-  //     memcpy(callback, argv[i], len);
-  //   }
-  // }
-
-  // if (callback == NULL) {
-  //   callback = (char*)malloc(14);
-  //   sprintf(callback, "tuio_callback");
-  // }
 
 #ifdef XP_MACOSX
   /* Select the Core Graphics drawing model. */
