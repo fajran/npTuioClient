@@ -33,7 +33,7 @@
 #define MIME_TYPES_HANDLED      "application/x-tuio"
 #define MIME_TYPES_DESCRIPTION  MIME_TYPES_HANDLED":tuio:"PLUGIN_NAME
 #define PLUGIN_DESCRIPTION      "TUIO Client plugin"
-#define PLUGIN_VERSION          "1.5b1"
+#define PLUGIN_VERSION          "1.5b2"
 
 #define DEFAULT_PORT      3333
 #define DEFAULT_CALLBACK  "tuio_callback"
