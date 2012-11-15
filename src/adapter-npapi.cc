@@ -17,6 +17,7 @@
 
 #include "adapter-npapi.h"
 
+#include <string>
 #include <sstream>
 
 #include "debug.h"
@@ -57,7 +58,7 @@ static void call_javascript(void* param) {
 
 NPAPIAdapter::NPAPIAdapter(const NPNetscapeFuncs* browser,
                            const void* plugin_instance,
-                           const char* callback)
+                           std::string callback)
     : browser_(browser), plugin_instance_(plugin_instance),
       callback_(callback) {
 }
@@ -72,7 +73,7 @@ void NPAPIAdapter::Destroy() {
 }
 
 void NPAPIAdapter::Invoke(TuioEvent event) {
-  Data* data = new Data(browser_, plugin_instance_, callback_, event);
+  Data* data = new Data(browser_, plugin_instance_, callback_.c_str(), event);
   browser_->pluginthreadasynccall(
     (NPP)plugin_instance_, call_javascript, data);
 }

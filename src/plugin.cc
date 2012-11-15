@@ -16,6 +16,8 @@
 //
 
 #include "plugin.h"
+
+#include <string>
 #include <stdio.h>
 
 #include "../npapi/npapi.h"
@@ -234,7 +236,7 @@ NPError NPP_New(NPMIMEType pluginType, NPP instance, uint16_t mode,
   D("NPP_New");
 
   const int port = 3333;
-  const char* callback = "tuio_callback";
+  const std::string callback("tuio_callback");
 
   ConnectionManager* manager = get_connection_manager();
 

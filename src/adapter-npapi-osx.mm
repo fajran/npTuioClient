@@ -20,6 +20,7 @@
 #include "../npapi/npapi.h"
 #include "../npapi/npfunctions.h"
 
+#include <string>
 #include <sstream>
 
 #include "debug.h"
@@ -87,7 +88,7 @@
 
 NPAPIAdapter::NPAPIAdapter(const NPNetscapeFuncs* browser,
                            const void* plugin_instance,
-                           const char* callback)
+                           std::string callback)
   : browser_(browser), plugin_instance_(plugin_instance), callback_(callback) {
 }
 
@@ -106,7 +107,7 @@ void NPAPIAdapter::Invoke(TuioEvent event) {
   AsyncCaller* caller = [[AsyncCaller alloc]
                          initWithBrowser:(NPNetscapeFuncs*)browser_
                           pluginInstance:plugin_instance_
-                                callback:callback_
+                                callback:callback_.c_str()
                             andTuioEvent:event];
   [caller invoke];
 }

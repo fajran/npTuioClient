@@ -19,13 +19,15 @@
 #define ADAPTER_NPAPI_H_
 
 #include "../npapi/npfunctions.h"
+
+#include <string>
 #include "adapter.h"
 
 class NPAPIAdapter : public Adapter {
 public:
   NPAPIAdapter(const NPNetscapeFuncs* browser,
                const void* plugin_instance,
-               const char* callback);
+               std::string callback);
   ~NPAPIAdapter();
 
   virtual void Init();
@@ -33,14 +35,14 @@ public:
 
   virtual void Invoke(TuioEvent event);
 
-  const char* get_callback() {
+  std::string get_callback() {
     return callback_;
   }
 
 private:
   const NPNetscapeFuncs* browser_;
   const void* plugin_instance_;
-  const char* callback_;
+  std::string callback_;
 };
 
 #endif
