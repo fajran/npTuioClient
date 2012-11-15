@@ -33,7 +33,7 @@
 }
 
 - (id)initWithBrowser:(NPNetscapeFuncs*)browser
-       pluginInstance:(void*)pluginInstance
+       pluginInstance:(const void*)pluginInstance
              callback:(const char*)callback
          andTuioEvent:(TuioEvent)event;
 
@@ -44,13 +44,13 @@
 @implementation AsyncCaller
 
 - (id)initWithBrowser:(NPNetscapeFuncs*)browser
-       pluginInstance:(void*)pluginInstance
+       pluginInstance:(const void*)pluginInstance
              callback:(const char*)callback
          andTuioEvent:(TuioEvent)event {
   id res = [super init];
 
   browser_ = browser;
-  pluginInstance_ = pluginInstance;
+  pluginInstance_ = (void*)pluginInstance;
   callback_ = (char*)callback;
   event_ = event;
 
@@ -105,7 +105,7 @@ void NPAPIAdapter::Invoke(TuioEvent event) {
 
   AsyncCaller* caller = [[AsyncCaller alloc]
                          initWithBrowser:(NPNetscapeFuncs*)browser_
-                          pluginInstance:(void*)plugin_instance_
+                          pluginInstance:plugin_instance_
                                 callback:callback_
                             andTuioEvent:event];
   [caller invoke];
