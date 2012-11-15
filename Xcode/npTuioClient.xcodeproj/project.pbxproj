@@ -317,7 +317,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = npTuioClient;
 				SDKROOT = macosx;
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = i386;
 				WRAPPER_EXTENSION = plugin;
 				ZERO_LINK = YES;
 			};
@@ -347,7 +347,7 @@
 				OTHER_CFLAGS = "";
 				PRODUCT_NAME = npTuioClient;
 				SDKROOT = macosx;
-				VALID_ARCHS = "i386 x86_64";
+				VALID_ARCHS = i386;
 				WRAPPER_EXTENSION = plugin;
 			};
 			name = Release;
