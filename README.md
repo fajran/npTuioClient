@@ -1,50 +1,40 @@
-!!! THIS BRANCH CONTAINS A WORK-IN-PROGRESS CODE !!!
-
-The code is not guaranteed to compile, things may crash, computers my explode. Use it with care.
-
-
 npTuioClient
 ============
 
-npTuioClient is a TUIO Client implemented as an NPAPI-based browser
-plugin. It uses [reacTIVision's](http://reactivision.sourceforge.net/)
-TUIO Client as a base.
+npTuioClient is a TUIO client implemented as an NPAPI-based browser
+plugins. It allows you to pass TUIO messages to into Javascript
+environment inside your browser and therefore enables you to build a
+multi-touch Javascript application!
 
-The plugin constantly calls a javascript function `tuio_callback`
-whenever a new touch event arrives. Having this function called, you
-can start using javascript to manipulate HTML, Canvas, SVG, etc in
-order to create a multi-touch application!
+The plugin works by capturing TUIO messages and forward them as
+Javascript calls. When a touch event arrives, the plugin will call
+`tuio_callback` function with touch type, locations, and other data as
+parameters. Check the included example or
+[TUIOjs](https://github.com/fajran/tuiojs) to see how to use them.
 
-Check the included examples to see how to use this plugin. Check also
-[TUIOjs](http://github.com/fajran/tuiojs/tree/master) to see more
-examples.
+This plugin is built on top of
+[reacTIVision's](http://reactivision.sourceforge.net/) TUIO client. It
+is also built as NPAPI-plugin so it will never work on Internet
+Explorer (unless it starts supporting the plugin architecture).
 
-The plugin has been tested and works on
+Limitation
+----------
 
-* Windows XP: Firefox 3.0.10, Google Chrome 2.0.172.33, and Safari 4.0.
-* Linux (Ubuntu 8.04): Firefox 3.0.11
-* Mac OS X 10.4.11: Firefox 3.5rc3 and Safari 4.0
+This plugin has only been tested on Mac OS X 10.7.5, but it is also
+known to work on Linux. The Visual Studio project is currently broken
+and hence this plugin will not work on Windows (unless somebody send
+me a patch :-)
 
-It doesn't work on Opera 9.64 on Windows XP nor Internet Explorer.
-
-To make the plugin works on Internet Explorer, the plugin has to be
-ported (or wrapped) to an ActiveX-based plugin first. This is needed
-since Internet Explorer doesn't support NPAPI-based plugin.
+If you work on Windows, please try the [older
+version](https://github.com/fajran/npTuioClient/tree/old).
 
 Download
 --------
 
-* [Windows](http://cloud.github.com/downloads/fajran/npTuioClient/npTuioClient-0.2-win.zip)
-* [Linux](http://cloud.github.com/downloads/fajran/npTuioClient/npTuioClient-0.2-linux.tar.gz) (Ubuntu 8.04 i386)
-* [Mac OS X](http://cloud.github.com/downloads/fajran/npTuioClient/npTuioClient-0.2-mac.zip)
+* [Mac OS X](https://fajran.s3.amazonaws.com/github/npTuioClient/npTuioClient-1.5b2-mac.zip)
 
 Compilation
 -----------
-
-### Windows
-
-Open the Visual C++ project/solution file and build. I use Visual C++
-2008 Express Edition.
 
 ### Linux
 
@@ -52,20 +42,10 @@ Go to the project directory and type `make`.
 
 ### Mac OS X
 
-Open the Xcode project and build. I use Xcode 2.5 under Mac OS X 10.4.11.
+Open the Xcode project and build. I use Xcode 4.6.3 under Mac OS X 10.7.5
 
 Installation
 ------------
-
-### Windows
-
-Put the plugin file `npTuioClient.dll` under Firefox'/Mozilla's
-`plugin` directory. Mine is `C:\Program Files\Mozilla
-Firefox\Plugins`.
-
-If you are using Google Chrome, put the plugin under
-`C:\Users\<user>\AppData\Local\Google\Chrome\Application\Plugins`. Create the
-directory if necessary.
 
 ### Linux
 
@@ -85,19 +65,4 @@ You can open multiple tabs or windows as long as they belong to the
 same browser instance. The plugin can't be used from multiple browsers
 at a time. This is because the TUIO Client library can only be started
 once at a time.
-
-Issues
-------
-
-* Firefox on Mac OS X crashes when the plugin is unloaded (all pages
-  that use the plugin are closed). This doesn't happen on Safari 4.0.
-  
-  TODO: check plugin's shutfown and bundle unloading.
-
-* Firefox on Linux can't cleanly close the TUIO connection. So, the
-  browser has to be restarted if the plugin want to be loaded again.
-  
-  TODO: check TUIO Client's stop function.
-
-
 
